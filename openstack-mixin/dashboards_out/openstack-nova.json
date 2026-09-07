@@ -1,0 +1,582 @@
+{
+      "links": [
+         {
+            "includeVars": true,
+            "keepTime": true,
+            "title": "OpenStack Cinder",
+            "type": "link",
+            "url": "/d/openstack-cinder"
+         },
+         {
+            "includeVars": true,
+            "keepTime": true,
+            "title": "OpenStack logs",
+            "type": "link",
+            "url": "/d/openstack-logs"
+         },
+         {
+            "includeVars": true,
+            "keepTime": true,
+            "title": "OpenStack Neutron",
+            "type": "link",
+            "url": "/d/openstack-neutron"
+         },
+         {
+            "includeVars": true,
+            "keepTime": true,
+            "title": "OpenStack overview",
+            "type": "link",
+            "url": "/d/openstack-overview"
+         }
+      ],
+      "panels": [
+         {
+            "collapsed": false,
+            "gridPos": {
+               "h": 1,
+               "w": 0,
+               "x": 0,
+               "y": 0
+            },
+            "id": 1,
+            "panels": [ ],
+            "title": "Nova service",
+            "type": "row"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Reports the status of the Nova compute service.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "fixed"
+                  },
+                  "mappings": [
+                     {
+                        "options": {
+                           "0": {
+                              "color": "red",
+                              "index": 1,
+                              "text": "Down"
+                           },
+                           "1": {
+                              "color": "green",
+                              "index": 0,
+                              "text": "Up"
+                           }
+                        },
+                        "type": "value"
+                     }
+                  ],
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  },
+                  "unit": "string"
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byFrameRefID",
+                        "options": "Nova status"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "string"
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 6,
+               "x": 0,
+               "y": 1
+            },
+            "id": 2,
+            "options": {
+               "graphMode": "none"
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_nova_up{job=~\"$job\",instance=~\"$instance\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{instance}}",
+                  "refId": "Nova status"
+               }
+            ],
+            "title": "Nova status",
+            "type": "stat"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The current number of total and running virtual machines.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "short"
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byFrameRefID",
+                        "options": "VMs"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "short"
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 18,
+               "x": 6,
+               "y": 1
+            },
+            "id": 3,
+            "interval": "1m",
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_nova_total_vms{job=~\"$job\",instance=~\"$instance\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{instance}}",
+                  "refId": "VMs"
+               }
+            ],
+            "title": "VMs",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Percentage of the maximum number of instances in use for each project.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "continuous-BlYlRd"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "scheme",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 1,
+                  "max": 1,
+                  "min": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "percentunit"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 0,
+               "y": 9
+            },
+            "id": 4,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list",
+                  "placement": "right"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_nova_limits_instances_used{job=~\"$job\",instance=~\"$instance\"} / clamp_min(openstack_nova_limits_instances_max{job=~\"$job\",instance=~\"$instance\"}, 1)",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{instance}} - {{tenant}}",
+                  "refId": "Instance usage"
+               }
+            ],
+            "title": "Instance usage",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Percentage of the maximum number of virtual CPUs in use for each project.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "continuous-BlYlRd"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "scheme",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 1,
+                  "max": 1,
+                  "min": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "percentunit"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 12,
+               "y": 9
+            },
+            "id": 5,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list",
+                  "placement": "right"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_nova_limits_vcpus_used{job=~\"$job\",instance=~\"$instance\"} / clamp_min(openstack_nova_limits_vcpus_max{job=~\"$job\",instance=~\"$instance\"}, 1)",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{instance}} - {{tenant}}",
+                  "refId": "vCPU usage"
+               }
+            ],
+            "title": "VCPU usage",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Percentage of the maximum amount of memory in use for each project.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "continuous-BlYlRd"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "scheme",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 1,
+                  "max": 1,
+                  "min": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "percentunit"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 0,
+               "y": 17
+            },
+            "id": 6,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list",
+                  "placement": "right"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_nova_limits_memory_used{job=~\"$job\",instance=~\"$instance\"} / clamp_min(openstack_nova_limits_memory_max{job=~\"$job\",instance=~\"$instance\"}, 1)",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{instance}} - {{tenant}}",
+                  "refId": "Memory usage"
+               }
+            ],
+            "title": "Memory usage",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Details for the agents for OpenStack Nova.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "align": "center"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  }
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Admin state"
+                     },
+                     "properties": [
+                        {
+                           "id": "custom.displayMode",
+                           "value": "color-text"
+                        },
+                        {
+                           "id": "mappings",
+                           "value": [
+                              {
+                                 "options": {
+                                    "disabled": {
+                                       "color": "red",
+                                       "index": 1,
+                                       "text": "Disabled"
+                                    },
+                                    "enabled": {
+                                       "color": "green",
+                                       "index": 0,
+                                       "text": "Enabled"
+                                    }
+                                 },
+                                 "type": "value"
+                              }
+                           ]
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 12,
+               "y": 17
+            },
+            "id": 7,
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_nova_agent_state{job=~\"$job\",instance=~\"$instance\"}",
+                  "format": "table",
+                  "instant": true,
+                  "legendFormat": "{{instance}} - {{service}} - {{hostname}}",
+                  "refId": "Nova agent state"
+               }
+            ],
+            "title": "Agents",
+            "transformations": [
+               {
+                  "id": "joinByField",
+                  "options": {
+                     "byField": "Time",
+                     "mode": "outer"
+                  }
+               },
+               {
+                  "id": "organize",
+                  "options": {
+                     "excludeByName": {
+                        "Time": true,
+                        "Value": true,
+                        "__name__": true,
+                        "hostname": true,
+                        "job": true
+                     },
+                     "includeByName": { },
+                     "indexByName": {
+                        "Time": 6,
+                        "Value": 9,
+                        "__name__": 7,
+                        "adminState": 3,
+                        "hostname": 5,
+                        "id": 4,
+                        "instance": 1,
+                        "job": 8,
+                        "service": 0,
+                        "zone": 2
+                     },
+                     "renameByName": {
+                        "Time": "",
+                        "adminState": "Admin state",
+                        "id": "ID",
+                        "instance": "Instance",
+                        "service": "Service",
+                        "zone": "Zone"
+                     }
+                  }
+               }
+            ],
+            "type": "table"
+         }
+      ],
+      "refresh": "1m",
+      "schemaVersion": 39,
+      "tags": [
+         "openstack"
+      ],
+      "templating": {
+         "list": [
+            {
+               "label": "Prometheus data source",
+               "name": "prometheus_datasource",
+               "query": "prometheus",
+               "regex": "",
+               "type": "datasource"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Job",
+               "multi": true,
+               "name": "job",
+               "query": "label_values(openstack_identity_up{}, job)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Instance",
+               "multi": true,
+               "name": "instance",
+               "query": "label_values(openstack_identity_up{job=~\"$job\"}, instance)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "hide": 2,
+               "label": "Loki data source",
+               "name": "loki_datasource",
+               "query": "loki",
+               "regex": "",
+               "type": "datasource"
+            }
+         ]
+      },
+      "time": {
+         "from": "now-30m",
+         "to": "now"
+      },
+      "timezone": "default",
+      "title": "OpenStack Nova",
+      "uid": "openstack-nova"
+   }

@@ -1,0 +1,1343 @@
+{
+      "annotations": {
+         "list": [ ]
+      },
+      "links": [
+         {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+               "redis-enterprise-mixin"
+            ],
+            "title": "All Redis Enterprise dashboards",
+            "type": "dashboards"
+         },
+         {
+            "includeVars": true,
+            "keepTime": true,
+            "title": "Redis Enterprise logs",
+            "type": "link",
+            "url": "/d/redisenterprise-logs"
+         },
+         {
+            "includeVars": true,
+            "keepTime": true,
+            "title": "Redis Enterprise nodes",
+            "type": "link",
+            "url": "/d/redisenterprise_nodes"
+         },
+         {
+            "includeVars": true,
+            "keepTime": true,
+            "title": "Redis Enterprise overview",
+            "type": "link",
+            "url": "/d/redisenterprise_overview"
+         }
+      ],
+      "panels": [
+         {
+            "collapsed": false,
+            "gridPos": {
+               "h": 1,
+               "w": 0,
+               "x": 0,
+               "y": 0
+            },
+            "id": 1,
+            "panels": [ ],
+            "title": "Database overview",
+            "type": "row"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Displays up/down status for the selected database.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "none"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 8,
+               "x": 0,
+               "y": 1
+            },
+            "id": 2,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "bdb_up{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }}",
+                  "refId": "Database up"
+               }
+            ],
+            "title": "Database up",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "datasource",
+               "uid": "-- Mixed --"
+            },
+            "description": "Displays up/down status for each shard related to the database.",
+            "fieldConfig": {
+               "defaults": {
+                  "max": 1,
+                  "min": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "green",
+                           "value": null
+                        },
+                        {
+                           "color": "red",
+                           "value": 0
+                        },
+                        {
+                           "color": "green",
+                           "value": 1
+                        }
+                     ]
+                  }
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 8,
+               "x": 8,
+               "y": 1
+            },
+            "id": 3,
+            "options": {
+               "displayMode": "basic",
+               "orientation": "horizontal",
+               "reduceOptions": {
+                  "calcs": [
+                     "lastNotNull"
+                  ]
+               },
+               "showUnfilled": false
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "redis_up{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }} - redis: {{ redis }}",
+                  "refId": "Shard up"
+               }
+            ],
+            "title": "Shards up",
+            "type": "bargauge"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Displays up/down status for each node related to the database.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "none"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 8,
+               "x": 16,
+               "y": 1
+            },
+            "id": 4,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "node_up{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", node=~\"$node\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ node }}",
+                  "refId": "Nodes up"
+               }
+            ],
+            "title": "Nodes up",
+            "type": "timeseries"
+         },
+         {
+            "collapsed": false,
+            "gridPos": {
+               "h": 1,
+               "w": 0,
+               "x": 0,
+               "y": 7
+            },
+            "id": 5,
+            "panels": [ ],
+            "title": "Database metrics",
+            "type": "row"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Rate of read and write requests.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "none"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 8,
+               "x": 0,
+               "y": 8
+            },
+            "id": 6,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "bdb_read_req{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }} - read",
+                  "refId": "Database read requests"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "bdb_write_req{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }} - write",
+                  "refId": "Database write requests"
+               }
+            ],
+            "title": "Database operations",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Average latency for read and write requests.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "s"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 8,
+               "x": 8,
+               "y": 8
+            },
+            "id": 7,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "bdb_avg_read_latency{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }} - read",
+                  "refId": "Database read latency"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "bdb_avg_write_latency{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }} - write",
+                  "refId": "Database write latency"
+               }
+            ],
+            "title": "Database latency",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Number of client connections.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 1,
+                  "noValue": "No packets",
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "none"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 8,
+               "x": 16,
+               "y": 8
+            },
+            "id": 8,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "bdb_conns{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }}",
+                  "refId": "Database connections"
+               }
+            ],
+            "title": "Database connections",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Number of keys in the database.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "none"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 8,
+               "x": 0,
+               "y": 14
+            },
+            "id": 9,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "bdb_no_of_keys{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }}",
+                  "refId": "Database key count"
+               }
+            ],
+            "title": "Database key count",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Calculated cache hit rate for the database.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "percent"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 8,
+               "x": 8,
+               "y": 14
+            },
+            "id": 10,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum(bdb_read_hits{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}) by (job, redis_cluster, bdb) / clamp_min(sum(bdb_read_hits{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}) by (job, redis_cluster, bdb) + sum(bdb_read_misses{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}) by (job, redis_cluster, bdb), 1) * 100",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }}",
+                  "refId": "Database cache hit ratio"
+               }
+            ],
+            "title": "Database cache hit ratio",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Calculated memory utilization % of the database compared to the limit.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "continuous-BlYlRd"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "scheme",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 1,
+                  "max": 100,
+                  "min": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "percent"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 8,
+               "x": 16,
+               "y": 14
+            },
+            "id": 11,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "bdb_used_memory{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"} / bdb_memory_limit{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"} * 100",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }}",
+                  "refId": "Database memory utilization"
+               }
+            ],
+            "title": "Database memory utilization",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Number of evicted and expired objects from the database.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "stacking": {
+                        "mode": "normal"
+                     }
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "ops"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 12,
+               "x": 0,
+               "y": 20
+            },
+            "id": 12,
+            "options": {
+               "legend": {
+                  "asTable": true,
+                  "calcs": [ ],
+                  "displayMode": "table",
+                  "placement": "right"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "bdb_evicted_objects{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }} - evicted",
+                  "refId": "Database evicted objects"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "bdb_expired_objects{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }} - expired",
+                  "refId": "Database expired objects"
+               }
+            ],
+            "title": "Database evictions vs expired objects",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "RAM fragmentation ratio between RSS and allocated RAM.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "percent"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 12,
+               "x": 12,
+               "y": 20
+            },
+            "id": 13,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "bdb_mem_frag_ratio{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }}",
+                  "refId": "Database memory fragmentation ratio"
+               }
+            ],
+            "title": "Database memory fragmentation ratio",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "LUA scripting heap size.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "min": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "bytes"
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byRegexp",
+                        "options": ".*(T|t)otal.*"
+                     },
+                     "properties": [
+                        {
+                           "id": "color",
+                           "value": {
+                              "fixedColor": "#ffb357",
+                              "mode": "fixed"
+                           }
+                        },
+                        {
+                           "id": "custom.fillOpacity",
+                           "value": 0
+                        },
+                        {
+                           "id": "custom.lineStyle",
+                           "value": {
+                              "dash": [
+                                 10,
+                                 10
+                              ],
+                              "fill": "dash"
+                           }
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 8,
+               "x": 0,
+               "y": 26
+            },
+            "id": 14,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "bdb_mem_size_lua{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }}",
+                  "refId": "Database LUA heap size"
+               }
+            ],
+            "title": "Database LUA heap size",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Rate of incoming network traffic.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 1,
+                  "noValue": "No packets",
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "binBps"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 8,
+               "x": 8,
+               "y": 26
+            },
+            "id": 15,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "bdb_ingress_bytes{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }}",
+                  "refId": "Database network ingress"
+               }
+            ],
+            "title": "Database network ingress",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Rate of outgoing network traffic.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 1,
+                  "noValue": "No packets",
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "binBps"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 8,
+               "x": 16,
+               "y": 26
+            },
+            "id": 16,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "bdb_egress_bytes{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }}",
+                  "refId": "Database network egress"
+               }
+            ],
+            "title": "Database network egress",
+            "type": "timeseries"
+         },
+         {
+            "collapsed": false,
+            "gridPos": {
+               "h": 1,
+               "w": 0,
+               "x": 0,
+               "y": 32
+            },
+            "id": 17,
+            "panels": [ ],
+            "title": "Active-Active",
+            "type": "row"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Sync status for CRDB traffic (0=in-sync, 1=syncing, 2=out of sync).",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "none"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 6,
+               "x": 0,
+               "y": 33
+            },
+            "id": 18,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "bdb_crdt_syncer_status{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }} - repl_id: {{ crdt_replica_id }}",
+                  "refId": "Sync status"
+               }
+            ],
+            "title": "Sync status",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Lag between source and destination for CRDB traffic.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "ms"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 6,
+               "x": 6,
+               "y": 33
+            },
+            "id": 19,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "bdb_crdt_syncer_local_ingress_lag_time{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }}",
+                  "refId": "Local lag"
+               }
+            ],
+            "title": "Local lag",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Rate of compressed network traffic to the CRDB.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "binBps"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 6,
+               "x": 12,
+               "y": 33
+            },
+            "id": 20,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "bdb_crdt_syncer_ingress_bytes{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }}",
+                  "refId": "CRDB ingress compressed"
+               }
+            ],
+            "title": "CRDB ingress compressed",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Rate of decompressed network traffic to the CRDB.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 1,
+                  "noValue": "No packets",
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "binBps"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 6,
+               "x": 18,
+               "y": 33
+            },
+            "id": 21,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "bdb_crdt_ingress_bytes_decompressed{job=~\"$job\",redis_cluster=~\"$redis_cluster\",instance=~\"$instance\", bdb=~\"$bdb\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ bdb }}",
+                  "refId": "CRDB ingress decompressed"
+               }
+            ],
+            "title": "CRDB ingress decompressed",
+            "type": "timeseries"
+         }
+      ],
+      "refresh": "1m",
+      "schemaVersion": 39,
+      "tags": [
+         "redis-enterprise-mixin"
+      ],
+      "templating": {
+         "list": [
+            {
+               "label": "Prometheus data source",
+               "name": "prometheus_datasource",
+               "query": "prometheus",
+               "regex": "",
+               "type": "datasource"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Job",
+               "multi": true,
+               "name": "job",
+               "query": "label_values(node_up{}, job)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".*",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Redis cluster",
+               "multi": true,
+               "name": "redis_cluster",
+               "query": "label_values(node_up{job=~\"$job\"}, redis_cluster)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Instance",
+               "multi": true,
+               "name": "instance",
+               "query": "label_values(node_up{job=~\"$job\",redis_cluster=~\"$redis_cluster\"}, instance)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "hide": 2,
+               "label": "Loki data source",
+               "name": "loki_datasource",
+               "query": "loki",
+               "regex": "",
+               "type": "datasource"
+            },
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Node",
+               "multi": true,
+               "name": "node",
+               "query": "label_values(node_up, node)",
+               "type": "query"
+            },
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Database",
+               "multi": true,
+               "name": "bdb",
+               "query": "label_values(bdb_up, bdb)",
+               "type": "query"
+            }
+         ]
+      },
+      "time": {
+         "from": "now-1h",
+         "to": "now"
+      },
+      "timezone": "default",
+      "title": "Redis Enterprise databases",
+      "uid": "redisenterprise_databases"
+   }

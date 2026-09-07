@@ -1,0 +1,639 @@
+{
+      "annotations": {
+         "list": [ ]
+      },
+      "links": [
+         {
+            "keepTime": true,
+            "title": "Apache ActiveMQ queue overview",
+            "type": "link",
+            "url": "/d/apacheactivemq_queues"
+         },
+         {
+            "keepTime": true,
+            "title": "Apache ActiveMQ topic overview",
+            "type": "link",
+            "url": "/d/apacheactivemq_topics"
+         },
+         {
+            "keepTime": true,
+            "title": "Apache ActiveMQ cluster overview",
+            "type": "link",
+            "url": "/d/apacheactivemq_cluster_overview"
+         },
+         {
+            "keepTime": true,
+            "title": "Apache ActiveMQ instance overview",
+            "type": "link",
+            "url": "/d/apacheactivemq_instance_overview"
+         },
+         {
+            "keepTime": true,
+            "title": "Apache ActiveMQ logs",
+            "type": "link",
+            "url": "/d/apacheactivemq-logs"
+         },
+         {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+               "apache-activemq"
+            ],
+            "title": "All dashboards",
+            "type": "dashboards"
+         }
+      ],
+      "panels": [
+         {
+            "collapsed": false,
+            "gridPos": {
+               "h": 1,
+               "w": 0,
+               "x": 0,
+               "y": 0
+            },
+            "id": 1,
+            "panels": [ ],
+            "title": "Cluster Overview",
+            "type": "row"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Number of Apache ActiveMQ clusters.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "fixed"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  }
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 6,
+               "x": 0,
+               "y": 1
+            },
+            "id": 2,
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "count(activemq_memory_usage_ratio{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\"})",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{instance}}: Count",
+                  "refId": "Clusters"
+               }
+            ],
+            "title": "Clusters",
+            "type": "stat"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Number of broker instances across clusters.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "fixed"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  }
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 6,
+               "x": 6,
+               "y": 1
+            },
+            "id": 3,
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "count(activemq_memory_usage_ratio{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\"})",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{instance}}: Brokers",
+                  "refId": "Brokers"
+               }
+            ],
+            "title": "Brokers",
+            "type": "stat"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Number of message producers active on destinations across clusters.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "fixed"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  }
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 6,
+               "x": 12,
+               "y": 1
+            },
+            "id": 4,
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum (activemq_queue_producer_count{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\", destination!~\"ActiveMQ.Advisory.*\"})",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{instance}}: Producers",
+                  "refId": "Producers"
+               }
+            ],
+            "title": "Producers",
+            "type": "stat"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The number of consumers subscribed to destinations across clusters.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "fixed"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  }
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 6,
+               "x": 18,
+               "y": 1
+            },
+            "id": 5,
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum (activemq_queue_consumer_count{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\", destination!~\"ActiveMQ.Advisory.*\"})",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{instance}}: Consumers",
+                  "refId": "Consumers"
+               }
+            ],
+            "title": "Consumers",
+            "type": "stat"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Number of messages that have been sent to destinations in a cluster.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  }
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 0,
+               "y": 9
+            },
+            "id": 6,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum by (activemq_cluster, job) (increase(activemq_queue_enqueue_count{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\"}[$__interval] offset $__interval)) + sum by (activemq_cluster, job) (increase(activemq_topic_enqueue_count{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\", destination!~\"ActiveMQ.Advisory.*\"}[$__interval] offset $__interval))",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ activemq_cluster }}",
+                  "refId": "Enqueue / $__interval"
+               }
+            ],
+            "title": "Enqueue / $__interval",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Number of messages that have been acknowledged (and removed) from destinations in a cluster.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  }
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 12,
+               "y": 9
+            },
+            "id": 7,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum by (activemq_cluster, job) (increase(activemq_queue_dequeue_count{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\"}[$__interval] offset $__interval)) + sum by (activemq_cluster, job) (increase(activemq_topic_dequeue_count{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\", destination!~\"ActiveMQ.Advisory.*\"}[$__interval] offset $__interval))",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ activemq_cluster }}",
+                  "refId": "Dequeue / $__interval"
+               }
+            ],
+            "title": "Dequeue / $__interval",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Average percentage of temporary memory used across clusters.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "green",
+                     "mode": "fixed"
+                  },
+                  "decimals": 1,
+                  "max": 1,
+                  "min": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  },
+                  "unit": "percentunit"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 8,
+               "x": 0,
+               "y": 17
+            },
+            "id": 8,
+            "options": {
+               "colorMode": "value",
+               "orientation": "horizontal",
+               "reduceOptions": {
+                  "calcs": [
+                     "lastNotNull"
+                  ]
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "avg by (activemq_cluster, job) (activemq_temp_usage_ratio{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\"})",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ activemq_cluster }}",
+                  "refId": "Average temporary memory usage"
+               }
+            ],
+            "title": "Average temporary memory usage",
+            "type": "bargauge"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Average percentage of store memory used across clusters.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "green",
+                     "mode": "fixed"
+                  },
+                  "decimals": 1,
+                  "max": 1,
+                  "min": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  },
+                  "unit": "percentunit"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 8,
+               "x": 8,
+               "y": 17
+            },
+            "id": 9,
+            "options": {
+               "colorMode": "value",
+               "orientation": "horizontal",
+               "reduceOptions": {
+                  "calcs": [
+                     "lastNotNull"
+                  ]
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "avg by (activemq_cluster, job) (activemq_store_usage_ratio{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\"})",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ activemq_cluster }}",
+                  "refId": "Average store memory usage"
+               }
+            ],
+            "title": "Average store memory usage",
+            "type": "bargauge"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Average percentage of broker memory used across clusters.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "green",
+                     "mode": "fixed"
+                  },
+                  "decimals": 1,
+                  "max": 1,
+                  "min": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  },
+                  "unit": "percentunit"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 8,
+               "x": 16,
+               "y": 17
+            },
+            "id": 10,
+            "options": {
+               "colorMode": "value",
+               "orientation": "horizontal",
+               "reduceOptions": {
+                  "calcs": [
+                     "lastNotNull"
+                  ]
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "avg by (activemq_cluster, job) (activemq_memory_usage_ratio{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\"})",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ activemq_cluster }}",
+                  "refId": "Average broker memory usage"
+               }
+            ],
+            "title": "Average broker memory usage",
+            "type": "bargauge"
+         }
+      ],
+      "refresh": "1m",
+      "schemaVersion": 39,
+      "tags": [
+         "apache-activemq"
+      ],
+      "templating": {
+         "list": [
+            {
+               "label": "Prometheus data source",
+               "name": "prometheus_datasource",
+               "query": "prometheus",
+               "regex": "",
+               "type": "datasource"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Job",
+               "multi": true,
+               "name": "job",
+               "query": "label_values(activemq_memory_usage_ratio{}, job)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".*",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Cluster",
+               "multi": true,
+               "name": "cluster",
+               "query": "label_values(activemq_memory_usage_ratio{job=~\"$job\"}, cluster)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "ActiveMQ cluster",
+               "multi": true,
+               "name": "activemq_cluster",
+               "query": "label_values(activemq_memory_usage_ratio{job=~\"$job\",cluster=~\"$cluster\"}, activemq_cluster)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Instance",
+               "multi": true,
+               "name": "instance",
+               "query": "label_values(activemq_memory_usage_ratio{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\"}, instance)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "hide": 2,
+               "label": "Loki data source",
+               "name": "loki_datasource",
+               "query": "loki",
+               "regex": "",
+               "type": "datasource"
+            }
+         ]
+      },
+      "time": {
+         "from": "now-30m",
+         "to": "now"
+      },
+      "timezone": "default",
+      "title": "Apache ActiveMQ cluster overview",
+      "uid": "apacheactivemq_cluster_overview"
+   }

@@ -1,0 +1,17 @@
+exclusions:
+  template-instance-rule:
+    reason: "These dashboards are designed to be single instance"
+    entries:
+      - dashboard: SNMP overview
+  target-job-rule:
+    reason: "Linter it not detecting right for these panels"
+    entries:
+      - panel: Power
+      - panel: DC voltage
+      - panel: Temperature
+  target-instance-rule:
+    reason: "Linter it not detecting right for these panels"
+    entries:
+      - panel: Power
+      - panel: DC voltage
+      - panel: Temperature

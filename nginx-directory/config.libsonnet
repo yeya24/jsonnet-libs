@@ -2,6 +2,8 @@
   _config+:: {
     namespace: error 'namespace required',
     cluster_dns_suffix: error 'cluster_dns_suffix required',
+    // log_format is enclosed in single quotes in the config file. Make sure to escape them properly if you want to use them.
+    log_format: '$remote_addr - $remote_user [$time_local]  $status "$request" $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for"',
     title: 'Admin',
 
     admin_services+: [
@@ -34,9 +36,28 @@
 
     // If true, the entries will be sorted by title
     nginx_directory_sorted: false,
+
+    // If false, links won't start with a /, making them relative links.
+    nginx_directory_absolute_links: true,
+
+    // Allow for extra CSS to be injected.
+    extra_css: '',
+
+    // Extra directives injected at the top of the nginx `http {}` block, for
+    // configuration that cannot live inside a `location {}`, e.g. `map` blocks.
+    extra_http_config: '',
+    extra_http_config_rendered:
+      if self.extra_http_config == ''
+      then ''
+      else '\n  '
+           + std.strReplace(std.rstripChars(self.extra_http_config, '\n'), '\n', '\n  '),  // indent by 2 spaces
+
+    // Description shown below the title
+    description: '',
+    description_html: if self.description != '' then '<p class="description">%s</p>' % self.description else '',
   },
 
   _images+:: {
-    nginx: 'nginx:1.15.1-alpine',
+    nginx: 'nginx:1.31.1-alpine@sha256:8b1e78743a03dbb2c95171cc58639fef29abc8816598e27fb910ed2e621e589a',
   },
 }

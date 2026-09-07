@@ -1,0 +1,88 @@
+---
+name: Build
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+
+jobs:
+  setup:
+    name: Setup tools
+    runs-on: ubuntu-latest
+    outputs:
+      cache-hit: ${{ steps.tools-cache.outputs.cache-hit }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup Go
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+        with:
+          go-version: 1.25
+      - name: Tools cache
+        id: tools-cache
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        with:
+          path: |
+            ~/go/bin
+            /usr/local/bin/promtool
+          key: ${{ runner.os }}-tools-${{ hashFiles('Makefile') }}
+      - name: Install CI dependencies
+        if: steps.tools-cache.outputs.cache-hit != 'true'
+        run: make install-ci-deps
+
+  lint-fmt:
+    name: Lint and Format
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup Go
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+        with:
+          go-version: 1.25
+      - name: Restore Tools cache
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        with:
+          path: |
+            ~/go/bin
+            /usr/local/bin/promtool
+          key: ${{ runner.os }}-tools-${{ hashFiles('Makefile') }}
+      - name: Lint and Format
+        run: make lint-fmt
+
+  tests:
+    name: Run Tests
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup Go
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+        with:
+          go-version: 1.25
+      - name: Restore Tools cache
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        with:
+          path: |
+            ~/go/bin
+            /usr/local/bin/promtool
+          key: ${{ runner.os }}-tools-${{ hashFiles('Makefile') }}
+      - name: Run Tests
+        run: make tests

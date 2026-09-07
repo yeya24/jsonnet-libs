@@ -1,0 +1,916 @@
+{
+      "annotations": {
+         "list": [ ]
+      },
+      "links": [
+         {
+            "keepTime": true,
+            "title": "Apache ActiveMQ topic overview",
+            "type": "link",
+            "url": "/d/apacheactivemq_topics"
+         },
+         {
+            "keepTime": true,
+            "title": "Apache ActiveMQ cluster overview",
+            "type": "link",
+            "url": "/d/apacheactivemq_cluster_overview"
+         },
+         {
+            "keepTime": true,
+            "title": "Apache ActiveMQ instance overview",
+            "type": "link",
+            "url": "/d/apacheactivemq_instance_overview"
+         },
+         {
+            "keepTime": true,
+            "title": "Apache ActiveMQ logs",
+            "type": "link",
+            "url": "/d/apacheactivemq-logs"
+         },
+         {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+               "apache-activemq"
+            ],
+            "title": "All dashboards",
+            "type": "dashboards"
+         }
+      ],
+      "panels": [
+         {
+            "collapsed": false,
+            "gridPos": {
+               "h": 1,
+               "w": 0,
+               "x": 0,
+               "y": 0
+            },
+            "id": 1,
+            "panels": [ ],
+            "title": "Queues",
+            "type": "row"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Number of active queues.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "fixed"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  }
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 6,
+               "x": 0,
+               "y": 1
+            },
+            "id": 2,
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "count (activemq_queue_queue_size{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\"})",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{activemq_cluster}} - {{ instance }} - {{ destination }}",
+                  "refId": "Queue count"
+               }
+            ],
+            "title": "Queue count",
+            "type": "stat"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Total number of messages in all queues.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "fixed"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  }
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 6,
+               "x": 6,
+               "y": 1
+            },
+            "id": 3,
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum (activemq_queue_queue_size{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\"})",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{activemq_cluster}} - {{ instance }} - {{ destination }}",
+                  "refId": "Total queue size"
+               }
+            ],
+            "title": "Total queue size",
+            "type": "stat"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Total number of queue producers.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "fixed"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  }
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 6,
+               "x": 12,
+               "y": 1
+            },
+            "id": 4,
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum (activemq_queue_producer_count{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\"})",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{activemq_cluster}} - {{ instance }} - {{ destination }}",
+                  "refId": "Total producers"
+               }
+            ],
+            "title": "Total queue producers",
+            "type": "stat"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Total number of queue consumers.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "fixed"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  }
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 6,
+               "x": 18,
+               "y": 1
+            },
+            "id": 5,
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum (activemq_queue_consumer_count{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\"})",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{activemq_cluster}} - {{ instance }} - {{ destination }}",
+                  "refId": "Total consumers"
+               }
+            ],
+            "title": "Total queue consumers",
+            "type": "stat"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Rate of messages being enqueued to queues.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "/ sec"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 0,
+               "y": 9
+            },
+            "id": 6,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "topk by (job,cluster,activemq_cluster, instance) ($k_selector, rate(activemq_queue_enqueue_count{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\", destination=~\".*$name.*\"}[$__rate_interval]))",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{activemq_cluster}} - {{ instance }} - {{ destination }}",
+                  "refId": "Top queues by enqueue rate"
+               }
+            ],
+            "title": "Queue enqueue rate",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Rate of messages being dequeued from queues.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "/ sec"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 12,
+               "y": 9
+            },
+            "id": 7,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "topk by (job,cluster,activemq_cluster, instance) ($k_selector, rate(activemq_queue_dequeue_count{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\", destination=~\".*$name.*\"}[$__rate_interval]))",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{activemq_cluster}} - {{ instance }} - {{ destination }}",
+                  "refId": "Top queues by dequeue rate"
+               }
+            ],
+            "title": "Queue dequeue rate",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Average time to enqueue messages to queues.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "ms"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 8,
+               "x": 0,
+               "y": 17
+            },
+            "id": 8,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "topk by (job,cluster,activemq_cluster, instance) ($k_selector, activemq_queue_average_enqueue_time{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\", destination=~\".*$name.*\"})",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{activemq_cluster}} - {{ instance }} - {{ destination }}",
+                  "refId": "Top queues by average enqueue time"
+               }
+            ],
+            "title": "Queue average enqueue time",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Rate of messages expiring in queues.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "/ sec"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 8,
+               "x": 8,
+               "y": 17
+            },
+            "id": 9,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "topk by (job,cluster,activemq_cluster, instance) ($k_selector, rate(activemq_queue_expired_count{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\", destination=~\".*$name.*\"}[$__rate_interval]))",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{activemq_cluster}} - {{ instance }} - {{ destination }}",
+                  "refId": "Top queues by expired rate"
+               }
+            ],
+            "title": "Queue expired rate",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Average size of messages in queues.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 54,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "bytes"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 8,
+               "x": 16,
+               "y": 17
+            },
+            "id": 10,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "topk by (job,cluster,activemq_cluster, instance) ($k_selector, activemq_queue_average_message_size{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\", destination=~\".*$name.*\"})",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{activemq_cluster}} - {{ instance }} - {{ destination }}",
+                  "refId": "Top queues by average message size"
+               }
+            ],
+            "title": "Queue average message size",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  }
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Enqueue rate"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "mps"
+                        }
+                     ]
+                  },
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Dequeue rate"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "mps"
+                        }
+                     ]
+                  },
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Average enqueue time"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "ms"
+                        }
+                     ]
+                  },
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Average message size"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "decbytes"
+                        }
+                     ]
+                  },
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "ActiveMQ cluster"
+                     },
+                     "properties": [
+                        {
+                           "id": "links",
+                           "value": [
+                              {
+                                 "title": "Cluster link",
+                                 "url": "d/apacheactivemq_cluster_overview?var-activemq_cluster=${__data.fields.activemq_cluster}&${__url_time_range}&var-datasource=${datasource}"
+                              }
+                           ]
+                        }
+                     ]
+                  },
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Instance"
+                     },
+                     "properties": [
+                        {
+                           "id": "links",
+                           "value": [
+                              {
+                                 "title": "Instance link",
+                                 "url": "d/apacheactivemq_instance_overview?var-instance=${__data.fields.instance}&${__url_time_range}&var-datasource=${datasource}"
+                              }
+                           ]
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 24,
+               "x": 0,
+               "y": 25
+            },
+            "id": 11,
+            "options": {
+               "cellHeight": "sm",
+               "footer": {
+                  "countRows": false,
+                  "fields": [
+                     ""
+                  ],
+                  "reducer": [
+                     "sum"
+                  ],
+                  "show": false
+               },
+               "showHeader": true
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "rate(activemq_queue_enqueue_count{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\", destination=~\".*$name.*\"}[$__rate_interval])",
+                  "format": "table",
+                  "instant": true,
+                  "interval": "1m",
+                  "legendFormat": "{{instance}}",
+                  "refId": "Queue enqueue rate summary"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "rate(activemq_queue_dequeue_count{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\", destination=~\".*$name.*\"}[$__rate_interval])",
+                  "format": "table",
+                  "instant": true,
+                  "interval": "1m",
+                  "legendFormat": "{{instance}}",
+                  "refId": "Queue dequeue rate summary"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "activemq_queue_average_enqueue_time{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\", destination=~\".*$name.*\"}",
+                  "format": "table",
+                  "instant": true,
+                  "legendFormat": "{{instance}}",
+                  "refId": "Queue average enqueue time summary"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "activemq_queue_average_message_size{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\",instance=~\"$instance\", destination=~\".*$name.*\"}",
+                  "format": "table",
+                  "instant": true,
+                  "legendFormat": "{{instance}}",
+                  "refId": "Queue average message size summary"
+               }
+            ],
+            "title": "Queue summary",
+            "transformations": [
+               {
+                  "id": "joinByField",
+                  "options": {
+                     "byField": "destination",
+                     "mode": "outer"
+                  }
+               },
+               {
+                  "id": "organize",
+                  "options": {
+                     "indexByName": { },
+                     "renameByName": {
+                        "Value #Queue average enqueue time summary": "Average enqueue time",
+                        "Value #Queue average message size summary": "Average message size",
+                        "Value #Queue dequeue rate summary": "Dequeue rate",
+                        "Value #Queue enqueue rate summary": "Enqueue rate",
+                        "activemq_cluster 1": "ActiveMQ cluster",
+                        "destination": "Destination",
+                        "instance 1": "Instance"
+                     }
+                  }
+               },
+               {
+                  "id": "filterFieldsByName",
+                  "options": {
+                     "include": {
+                        "names": [
+                           "Destination",
+                           "ActiveMQ cluster",
+                           "Instance",
+                           "Enqueue rate",
+                           "Dequeue rate",
+                           "Average enqueue time",
+                           "Average message size"
+                        ]
+                     }
+                  }
+               }
+            ],
+            "type": "table"
+         }
+      ],
+      "refresh": "1m",
+      "schemaVersion": 39,
+      "tags": [
+         "apache-activemq"
+      ],
+      "templating": {
+         "list": [
+            {
+               "label": "Prometheus data source",
+               "name": "prometheus_datasource",
+               "query": "prometheus",
+               "regex": "",
+               "type": "datasource"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Job",
+               "multi": true,
+               "name": "job",
+               "query": "label_values(activemq_memory_usage_ratio{}, job)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".*",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Cluster",
+               "multi": true,
+               "name": "cluster",
+               "query": "label_values(activemq_memory_usage_ratio{job=~\"$job\"}, cluster)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "ActiveMQ cluster",
+               "multi": true,
+               "name": "activemq_cluster",
+               "query": "label_values(activemq_memory_usage_ratio{job=~\"$job\",cluster=~\"$cluster\"}, activemq_cluster)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Instance",
+               "multi": true,
+               "name": "instance",
+               "query": "label_values(activemq_memory_usage_ratio{job=~\"$job\",cluster=~\"$cluster\",activemq_cluster=~\"$activemq_cluster\"}, instance)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "hide": 2,
+               "label": "Loki data source",
+               "name": "loki_datasource",
+               "query": "loki",
+               "regex": "",
+               "type": "datasource"
+            },
+            {
+               "current": {
+                  "selected": false,
+                  "text": "4",
+                  "value": "4"
+               },
+               "includeAll": false,
+               "label": "Top queue count",
+               "multi": false,
+               "name": "k_selector",
+               "options": [
+                  {
+                     "selected": true,
+                     "text": "2",
+                     "value": "2"
+                  },
+                  {
+                     "selected": false,
+                     "text": "4",
+                     "value": "4"
+                  },
+                  {
+                     "selected": false,
+                     "text": "6",
+                     "value": "6"
+                  },
+                  {
+                     "selected": false,
+                     "text": "8",
+                     "value": "8"
+                  },
+                  {
+                     "selected": false,
+                     "text": "10",
+                     "value": "10"
+                  }
+               ],
+               "query": "2 : 2,4 : 4,6 : 6,8 : 8,10 : 10",
+               "type": "custom"
+            },
+            {
+               "current": {
+                  "selected": false,
+                  "text": "",
+                  "value": ""
+               },
+               "label": "Queue by name",
+               "name": "name",
+               "options": [
+                  {
+                     "selected": true,
+                     "text": "",
+                     "value": ""
+                  }
+               ],
+               "query": "",
+               "type": "textbox"
+            }
+         ]
+      },
+      "time": {
+         "from": "now-30m",
+         "to": "now"
+      },
+      "timezone": "default",
+      "title": "Apache ActiveMQ queue overview",
+      "uid": "apacheactivemq_queues"
+   }

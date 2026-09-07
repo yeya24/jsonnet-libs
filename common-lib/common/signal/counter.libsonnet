@@ -8,36 +8,29 @@ base {
     name,
     type,
     unit,
+    nameShort,
     description,
-    expr,
-    exprWrappers,
     aggLevel,
     aggFunction,
-    aggKeepLabels,
     vars,
     datasource,
-    valueMapping,
-    legendCustomTemplate,
-    rangeFunction,
+    sourceMaps,
   ):
     base.new(
       name,
       type,
       unit,
+      nameShort,
       description,
-      expr,
-      exprWrappers,
       aggLevel,
       aggFunction,
-      aggKeepLabels,
       vars,
       datasource,
-      valueMapping,
-      legendCustomTemplate,
-      rangeFunction,
+      sourceMaps=sourceMaps,
     )
 
     {
+      local this = self,
     },
 
 }

@@ -1,0 +1,700 @@
+{
+      "annotations": {
+         "list": [ ]
+      },
+      "editable": false,
+      "id": null,
+      "links": [
+         {
+            "keepTime": true,
+            "title": "TensorFlow logs",
+            "type": "link",
+            "url": "/d/tensorflow-logs"
+         },
+         {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+               "tensorflow-mixin"
+            ],
+            "title": "All dashboards",
+            "type": "dashboards"
+         }
+      ],
+      "panels": [
+         {
+            "collapsed": false,
+            "gridPos": {
+               "h": 1,
+               "w": 0,
+               "x": 0,
+               "y": 0
+            },
+            "id": 1,
+            "panels": [ ],
+            "title": "Overview",
+            "type": "row"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Rate of requests over time for the selected model. Grouped by statuses.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 10,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "reqps"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 24,
+               "x": 0,
+               "y": 1
+            },
+            "id": 2,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "rate(:tensorflow:serving:request_count{job=~\"integrations/tensorflow\",job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", model_name=~\"$model_name\"}[$__rate_interval])",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{instance}}",
+                  "refId": "Model request rate"
+               }
+            ],
+            "title": "Model request rate",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Average request latency of predict requests for the selected model.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 10,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "µs"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 0,
+               "y": 9
+            },
+            "id": 3,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "increase(:tensorflow:serving:request_latency_sum{job=~\"integrations/tensorflow\",job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", model_name=~\"$model_name\"}[$__interval:] offset $__interval)/increase(:tensorflow:serving:request_latency_count{job=~\"integrations/tensorflow\",job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", model_name=~\"$model_name\"}[$__interval:] offset $__interval)",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{instance}}",
+                  "refId": "Model predict request latency"
+               }
+            ],
+            "title": "Model predict request latency",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Average runtime latency to fulfill a predict request for the selected model.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 10,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "µs"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 12,
+               "y": 9
+            },
+            "id": 4,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "increase(:tensorflow:serving:runtime_latency_sum{job=~\"integrations/tensorflow\",job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", model_name=~\"$model_name\"}[$__interval:] offset $__interval)/increase(:tensorflow:serving:runtime_latency_count{job=~\"integrations/tensorflow\",job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", model_name=~\"$model_name\"}[$__interval:] offset $__interval)",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{instance}}",
+                  "refId": "Model runtime latency"
+               }
+            ],
+            "title": "Model predict runtime latency",
+            "type": "timeseries"
+         },
+         {
+            "collapsed": false,
+            "gridPos": {
+               "h": 1,
+               "w": 0,
+               "x": 0,
+               "y": 17
+            },
+            "id": 5,
+            "panels": [ ],
+            "title": "Serving overview",
+            "type": "row"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Number of graph build calls over time.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 10,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "calls"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 0,
+               "y": 18
+            },
+            "id": 6,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "increase(:tensorflow:core:graph_build_calls{job=~\"integrations/tensorflow\",job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[$__interval:] offset -$__interval)",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{instance}}",
+                  "refId": "Graph build calls"
+               }
+            ],
+            "title": "Graph build calls",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Number of graph runs over time.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 10,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "runs"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 12,
+               "y": 18
+            },
+            "id": 7,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "increase(:tensorflow:core:graph_runs{job=~\"integrations/tensorflow\",job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[$__interval:] offset -$__interval)",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{instance}}",
+                  "refId": "Graph runs"
+               }
+            ],
+            "title": "Graph runs",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Average time taken to build graphs.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 10,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "µs"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 0,
+               "y": 26
+            },
+            "id": 8,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "increase(:tensorflow:core:graph_build_time_usecs{job=~\"integrations/tensorflow\",job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[$__interval:] offset $__interval)/increase(:tensorflow:core:graph_build_calls{job=~\"integrations/tensorflow\",job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[$__interval:] offset $__interval)",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{instance}}",
+                  "refId": "Average graph build time"
+               }
+            ],
+            "title": "Average graph build time",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Average time taken to run graphs.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 10,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "µs"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 12,
+               "y": 26
+            },
+            "id": 9,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "increase(:tensorflow:core:graph_run_time_usecs{job=~\"integrations/tensorflow\",job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[$__interval:] offset $__interval)/increase(:tensorflow:core:graph_runs{job=~\"integrations/tensorflow\",job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[$__interval:] offset $__interval)",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{instance}}",
+                  "refId": "Average graph run time"
+               }
+            ],
+            "title": "Average graph run time",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Average batch queuing latency for the selected model.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 10,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "µs"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 0,
+               "y": 34
+            },
+            "id": 10,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "increase(:tensorflow:serving:batching_session:queuing_latency_sum{job=~\"integrations/tensorflow\",job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[$__interval:] offset $__interval)/increase(:tensorflow:serving:batching_session:queuing_latency_count{job=~\"integrations/tensorflow\",job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[$__interval:] offset $__interval)",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{instance}}",
+                  "refId": "Batch queuing latency"
+               }
+            ],
+            "title": "Batch queuing latency",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Rate of batch queuing operations.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 10,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "batches/s"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 12,
+               "y": 34
+            },
+            "id": 11,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "rate(:tensorflow:serving:batching_session:queuing_latency_count{job=~\"integrations/tensorflow\",job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}[$__rate_interval])",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{instance}}",
+                  "refId": "Batch queuing rate"
+               }
+            ],
+            "title": "Batch queue throughput",
+            "type": "timeseries"
+         }
+      ],
+      "refresh": "30s",
+      "schemaVersion": 39,
+      "tags": [
+         "tensorflow-mixin"
+      ],
+      "templating": {
+         "list": [
+            {
+               "label": "Prometheus data source",
+               "name": "prometheus_datasource",
+               "query": "prometheus",
+               "regex": "(?!grafanacloud-usage|grafanacloud-ml-metrics).+",
+               "type": "datasource"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Job",
+               "multi": true,
+               "name": "job",
+               "query": "label_values(:tensorflow:serving:request_count{job=~\"integrations/tensorflow\"}, job)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".*",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Cluster",
+               "multi": true,
+               "name": "cluster",
+               "query": "label_values(:tensorflow:serving:request_count{job=~\"integrations/tensorflow\",job=~\"$job\"}, cluster)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Instance",
+               "multi": true,
+               "name": "instance",
+               "query": "label_values(:tensorflow:serving:request_count{job=~\"integrations/tensorflow\",job=~\"$job\",cluster=~\"$cluster\"}, instance)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "hide": 2,
+               "label": "Loki data source",
+               "name": "loki_datasource",
+               "query": "loki",
+               "regex": "(?!grafanacloud.+usage-insights|grafanacloud.+alert-state-history).+",
+               "type": "datasource"
+            },
+            {
+               "allValue": ".*",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "label": "Model name",
+               "multi": true,
+               "name": "model_name",
+               "query": "label_values(:tensorflow:serving:request_count{job=~\"integrations/tensorflow\",job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}, model_name)",
+               "refresh": 2,
+               "type": "query"
+            }
+         ]
+      },
+      "time": {
+         "from": "now-30m",
+         "to": "now"
+      },
+      "timezone": "default",
+      "title": "TensorFlow overview",
+      "uid": "tensorflow_tensorflow_overview"
+   }

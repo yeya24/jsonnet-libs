@@ -1,0 +1,131 @@
+---
+name: Mixin
+
+permissions:
+  contents: read
+
+on:
+  # To conserve resources we only run tests against main in PRs
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  setup:
+    name: Setup tools
+    runs-on: ubuntu-latest
+    outputs:
+      cache-hit: ${{ steps.tools-cache.outputs.cache-hit }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup Go
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+        with:
+          go-version: 1.25
+      - name: Tools cache
+        id: tools-cache
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        with:
+          path: |
+            ~/go/bin
+            /usr/local/bin/promtool
+          key: ${{ runner.os }}-tools-${{ hashFiles('Makefile') }}
+      - name: Install CI dependencies
+        if: steps.tools-cache.outputs.cache-hit != 'true'
+        run: make install-ci-deps
+
+  check-for-changed-mixins:
+    name: Check for changes
+    needs: setup
+    runs-on: ubuntu-latest
+    outputs:
+      changed-mixins: ${{ steps.changed-mixins.outputs.all_changed_files }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Get changed mixins
+        id: changed-mixins
+        uses: step-security/changed-files@2e07db73e5ccdb319b9a6c7766bd46d39d304bad # v47.0.5
+        with:
+          dir_names: true
+          dir_names_exclude_current_dir: true
+          dir_names_max_depth: 1
+          files: | 
+            **-mixin/
+            **-observ-lib/
+          matrix: true
+      - name: List all changed mixins
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-mixins.outputs.all_changed_files }}
+        run: echo "${ALL_CHANGED_FILES}"
+
+  lint-mixin:
+    name: Test mixin
+    if: needs.check-for-changed-mixins.outputs.changed-mixins != '[]'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: write
+      pull-requests: write
+      repository-projects: write
+    timeout-minutes: 15
+    needs: [setup, check-for-changed-mixins]
+    strategy:
+      matrix:
+        mixin: ${{ fromJSON(needs.check-for-changed-mixins.outputs.changed-mixins) }}
+      fail-fast: false
+    services:
+      grafana:
+        image: grafana/grafana:13.2.0@sha256:3fd54ae1214669f8355f065ec9f6445d5279a3d77095ab048ca045685272429b
+        ports:
+          - 3000:3000
+        env:
+          GF_AUTH_DISABLE_LOGIN_FORM: "true"
+          GF_AUTH_ANONYMOUS_ENABLED: "true"
+          GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup Go
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+        with:
+          go-version: 1.25
+      - name: Restore Tools cache
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        with:
+          path: |
+            ~/go/bin
+            /usr/local/bin/promtool
+          key: ${{ runner.os }}-tools-${{ hashFiles('Makefile') }}
+      - name: Install mixin dependencies
+        working-directory: ./${{ matrix.mixin }}
+        run: make build
+      - name: Lint mixin
+        working-directory: ./${{ matrix.mixin }}
+        run: make lint
+      - name: Check for unexpected changes in generated files
+        working-directory: ./${{ matrix.mixin }}
+        run: "make -B dashboards_out prometheus_alerts.yaml prometheus_rules.yaml && git diff --exit-code || ( echo 'Error: Generated files are not up to date. Run make and commit the local diff'; exit 1; )"
+      - name: Wait for Grafana and validate dashboards
+        working-directory: ./${{ matrix.mixin }}
+        env:
+          GRAFANA_URL: http://localhost:3000
+        run: |
+          # Wait for Grafana to be ready
+          timeout 60s bash -c 'until curl -s http://localhost:3000/api/health | grep "ok"; do sleep 1; done'
+          
+          # Try to deploy dashboards
+          make deploy_dashboards
+      - name: Run promtool test for rules
+        working-directory: ./${{ matrix.mixin }}
+        run: make test

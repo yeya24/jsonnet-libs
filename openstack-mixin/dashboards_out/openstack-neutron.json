@@ -1,0 +1,1115 @@
+{
+      "links": [
+         {
+            "includeVars": true,
+            "keepTime": true,
+            "title": "OpenStack Cinder",
+            "type": "link",
+            "url": "/d/openstack-cinder"
+         },
+         {
+            "includeVars": true,
+            "keepTime": true,
+            "title": "OpenStack logs",
+            "type": "link",
+            "url": "/d/openstack-logs"
+         },
+         {
+            "includeVars": true,
+            "keepTime": true,
+            "title": "OpenStack Nova",
+            "type": "link",
+            "url": "/d/openstack-nova"
+         },
+         {
+            "includeVars": true,
+            "keepTime": true,
+            "title": "OpenStack overview",
+            "type": "link",
+            "url": "/d/openstack-overview"
+         }
+      ],
+      "panels": [
+         {
+            "collapsed": false,
+            "gridPos": {
+               "h": 1,
+               "w": 0,
+               "x": 0,
+               "y": 0
+            },
+            "id": 1,
+            "panels": [ ],
+            "title": "Neutron service",
+            "type": "row"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Reports the status of the Neutron networking service.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "fixed"
+                  },
+                  "mappings": [
+                     {
+                        "options": {
+                           "0": {
+                              "color": "red",
+                              "index": 1,
+                              "text": "Down"
+                           },
+                           "1": {
+                              "color": "green",
+                              "index": 0,
+                              "text": "Up"
+                           }
+                        },
+                        "type": "value"
+                     }
+                  ],
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  },
+                  "unit": "string"
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byFrameRefID",
+                        "options": "Neutron status"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "string"
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 6,
+               "x": 0,
+               "y": 1
+            },
+            "id": 2,
+            "options": {
+               "graphMode": "none"
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_neutron_up{job=~\"$job\",instance=~\"$instance\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{instance}}",
+                  "refId": "Neutron status"
+               }
+            ],
+            "title": "Neutron status",
+            "type": "stat"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The number of networks managed by Neutron.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "short"
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byFrameRefID",
+                        "options": "Networks"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "short"
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 9,
+               "x": 6,
+               "y": 1
+            },
+            "id": 3,
+            "interval": "1m",
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_neutron_networks{job=~\"$job\",instance=~\"$instance\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{instance}}",
+                  "refId": "Networks"
+               }
+            ],
+            "title": "Networks",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The number of networks managed by Neutron.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "short"
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byFrameRefID",
+                        "options": "Subnets"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "short"
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 9,
+               "x": 15,
+               "y": 1
+            },
+            "id": 4,
+            "interval": "1m",
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_neutron_subnets{job=~\"$job\",instance=~\"$instance\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{instance}}",
+                  "refId": "Subnets"
+               }
+            ],
+            "title": "Subnets",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The number of routers managed by Neutron.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  }
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 0,
+               "y": 9
+            },
+            "id": 5,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_neutron_routers{job=~\"$job\",instance=~\"$instance\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{instance}} - total",
+                  "refId": "Routers"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_neutron_routers_not_active{job=~\"$job\",instance=~\"$instance\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{instance}} - inactive",
+                  "refId": "Inactive routers"
+               }
+            ],
+            "title": "Routers",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Detailed view of the routers managed by Neutron.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "align": "center"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  }
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byRegexp",
+                        "options": "/Admin up|Status/"
+                     },
+                     "properties": [
+                        {
+                           "id": "custom.displayMode",
+                           "value": "color-text"
+                        },
+                        {
+                           "id": "mappings",
+                           "value": [
+                              {
+                                 "options": {
+                                    "ACTIVE": {
+                                       "color": "green",
+                                       "index": 2,
+                                       "text": "Active"
+                                    },
+                                    "DOWN": {
+                                       "color": "red",
+                                       "index": 3,
+                                       "text": "Down"
+                                    },
+                                    "false": {
+                                       "color": "red",
+                                       "index": 1,
+                                       "text": "False"
+                                    },
+                                    "true": {
+                                       "color": "green",
+                                       "index": 0,
+                                       "text": "True"
+                                    }
+                                 },
+                                 "type": "value"
+                              }
+                           ]
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 12,
+               "y": 9
+            },
+            "id": 6,
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_neutron_router{job=~\"$job\",instance=~\"$instance\"}",
+                  "format": "table",
+                  "instant": true,
+                  "legendFormat": "{{instance}} - {{name}}",
+                  "refId": "Router info"
+               }
+            ],
+            "title": "Router details",
+            "transformations": [
+               {
+                  "id": "joinByField",
+                  "options": {
+                     "byField": "Time",
+                     "mode": "outer"
+                  }
+               },
+               {
+                  "id": "organize",
+                  "options": {
+                     "excludeByName": {
+                        "Time": true,
+                        "Value": true,
+                        "__name__": true,
+                        "hostname": true,
+                        "job": true,
+                        "project_id": true
+                     },
+                     "includeByName": { },
+                     "indexByName": {
+                        "Time": 7,
+                        "Value": 10,
+                        "__name__": 8,
+                        "admin_state_up": 3,
+                        "external_network_id": 5,
+                        "id": 4,
+                        "instance": 1,
+                        "job": 9,
+                        "name": 0,
+                        "project_id": 6,
+                        "status": 2
+                     },
+                     "renameByName": {
+                        "Time": "",
+                        "adminState": "Admin state",
+                        "admin_state_up": "Admin up",
+                        "external_network_id": "External network ID",
+                        "id": "ID",
+                        "instance": "Instance",
+                        "name": "Name",
+                        "project_id": "",
+                        "service": "Service",
+                        "status": "Status",
+                        "zone": "Zone"
+                     }
+                  }
+               }
+            ],
+            "type": "table"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The number of routers managed by Neutron.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  }
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 8,
+               "x": 0,
+               "y": 17
+            },
+            "id": 7,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_neutron_ports{job=~\"$job\",instance=~\"$instance\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{instance}} - total",
+                  "refId": "Ports"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_neutron_ports_lb_not_active{job=~\"$job\",instance=~\"$instance\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{instance}} - load balancer inactive",
+                  "refId": "Load balancer inactive ports"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_neutron_ports_no_ips{job=~\"$job\",instance=~\"$instance\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{instance}} - no IPs",
+                  "refId": "Ports with no IPs"
+               }
+            ],
+            "title": "Ports",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Detailed view of the ports managed by Neutron.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "align": "center"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  }
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byRegexp",
+                        "options": "/Admin up|Status/"
+                     },
+                     "properties": [
+                        {
+                           "id": "custom.displayMode",
+                           "value": "color-text"
+                        },
+                        {
+                           "id": "mappings",
+                           "value": [
+                              {
+                                 "options": {
+                                    "ACTIVE": {
+                                       "color": "green",
+                                       "index": 2,
+                                       "text": "Active"
+                                    },
+                                    "DOWN": {
+                                       "color": "red",
+                                       "index": 3,
+                                       "text": "Down"
+                                    },
+                                    "false": {
+                                       "color": "red",
+                                       "index": 1,
+                                       "text": "False"
+                                    },
+                                    "true": {
+                                       "color": "green",
+                                       "index": 0,
+                                       "text": "True"
+                                    }
+                                 },
+                                 "type": "value"
+                              }
+                           ]
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 16,
+               "x": 8,
+               "y": 17
+            },
+            "id": 8,
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_neutron_port{job=~\"$job\",instance=~\"$instance\"}",
+                  "format": "table",
+                  "instant": true,
+                  "legendFormat": "{{instance}} - {{mac_address}}",
+                  "refId": "Port info"
+               }
+            ],
+            "title": "Port details",
+            "transformations": [
+               {
+                  "id": "joinByField",
+                  "options": {
+                     "byField": "Time",
+                     "mode": "outer"
+                  }
+               },
+               {
+                  "id": "organize",
+                  "options": {
+                     "excludeByName": {
+                        "Time": true,
+                        "Value": true,
+                        "__name__": true,
+                        "fixed_ips": true,
+                        "hostname": true,
+                        "job": true
+                     },
+                     "includeByName": { },
+                     "indexByName": {
+                        "Time": 8,
+                        "Value": 11,
+                        "__name__": 9,
+                        "admin_state_up": 3,
+                        "binding_vif_type": 6,
+                        "device_owner": 5,
+                        "instance": 0,
+                        "job": 10,
+                        "mac_address": 1,
+                        "network_id": 4,
+                        "status": 2,
+                        "uuid": 7
+                     },
+                     "renameByName": {
+                        "Time": "",
+                        "adminState": "Admin state",
+                        "admin_state_up": "Admin up",
+                        "binding_vif_type": "Binding VIF type",
+                        "device_owner": "Device owner",
+                        "fixed_ips": "",
+                        "id": "ID",
+                        "instance": "Instance",
+                        "mac_address": "MAC address",
+                        "network_id": "Network ID",
+                        "service": "Service",
+                        "status": "Status",
+                        "uuid": "UUID",
+                        "zone": "Zone"
+                     }
+                  }
+               }
+            ],
+            "type": "table"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The number of public IP addresses managed by Neutron.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  }
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 0,
+               "y": 25
+            },
+            "id": 9,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_neutron_floating_ips{job=~\"$job\",instance=~\"$instance\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{instance}} - total",
+                  "refId": "Floating IPs"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_neutron_floating_ips_associated_not_active{job=~\"$job\",instance=~\"$instance\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{instance}} - associated inactive",
+                  "refId": "Inactive associated floating IPs"
+               }
+            ],
+            "title": "Floating IPs",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The usage of available IP addresses broken down by subnet.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "continuous-BlYlRd"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "scheme",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 1,
+                  "max": 1,
+                  "min": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "percentunit"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 12,
+               "y": 25
+            },
+            "id": 10,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list",
+                  "placement": "right"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum by (job, instance, ip_version, subnet_name) (openstack_neutron_network_ip_availabilities_used{job=~\"$job\",instance=~\"$instance\"}) / sum by (job, instance, ip_version, subnet_name)(openstack_neutron_network_ip_availabilities_total{job=~\"$job\",instance=~\"$instance\"})",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{instance}} - {{subnet_name}}",
+                  "refId": "IP pool usage"
+               }
+            ],
+            "title": "IPs used",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The number of network security groups managed by Neutron.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "short"
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byFrameRefID",
+                        "options": "Security groups"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "short"
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 0,
+               "y": 33
+            },
+            "id": 11,
+            "interval": "1m",
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_neutron_security_groups{job=~\"$job\",instance=~\"$instance\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{instance}}",
+                  "refId": "Security groups"
+               }
+            ],
+            "title": "Security groups",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Details for the agents for OpenStack Neutron.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "align": "center"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  }
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Admin state"
+                     },
+                     "properties": [
+                        {
+                           "id": "custom.displayMode",
+                           "value": "color-text"
+                        },
+                        {
+                           "id": "mappings",
+                           "value": [
+                              {
+                                 "options": {
+                                    "down": {
+                                       "color": "red",
+                                       "index": 1,
+                                       "text": "Down"
+                                    },
+                                    "up": {
+                                       "color": "green",
+                                       "index": 0,
+                                       "text": "Up"
+                                    }
+                                 },
+                                 "type": "value"
+                              }
+                           ]
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 12,
+               "y": 33
+            },
+            "id": 12,
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "openstack_neutron_agent_state{job=~\"$job\",instance=~\"$instance\"}",
+                  "format": "table",
+                  "instant": true,
+                  "legendFormat": "{{instance}} - {{service}} - {{hostname}}",
+                  "refId": "Neutron agent state"
+               }
+            ],
+            "title": "Agents",
+            "transformations": [
+               {
+                  "id": "joinByField",
+                  "options": {
+                     "byField": "Time",
+                     "mode": "outer"
+                  }
+               },
+               {
+                  "id": "organize",
+                  "options": {
+                     "excludeByName": {
+                        "Time": true,
+                        "Value": true,
+                        "__name__": true,
+                        "hostname": true,
+                        "job": true
+                     },
+                     "includeByName": { },
+                     "indexByName": {
+                        "Time": 6,
+                        "Value": 9,
+                        "__name__": 7,
+                        "adminState": 3,
+                        "hostname": 5,
+                        "id": 4,
+                        "instance": 1,
+                        "job": 8,
+                        "service": 0,
+                        "zone": 2
+                     },
+                     "renameByName": {
+                        "Time": "",
+                        "adminState": "Admin state",
+                        "id": "ID",
+                        "instance": "Instance",
+                        "service": "Service",
+                        "zone": "Zone"
+                     }
+                  }
+               }
+            ],
+            "type": "table"
+         }
+      ],
+      "refresh": "1m",
+      "schemaVersion": 39,
+      "tags": [
+         "openstack"
+      ],
+      "templating": {
+         "list": [
+            {
+               "label": "Prometheus data source",
+               "name": "prometheus_datasource",
+               "query": "prometheus",
+               "regex": "",
+               "type": "datasource"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Job",
+               "multi": true,
+               "name": "job",
+               "query": "label_values(openstack_identity_up{}, job)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Instance",
+               "multi": true,
+               "name": "instance",
+               "query": "label_values(openstack_identity_up{job=~\"$job\"}, instance)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "hide": 2,
+               "label": "Loki data source",
+               "name": "loki_datasource",
+               "query": "loki",
+               "regex": "",
+               "type": "datasource"
+            }
+         ]
+      },
+      "time": {
+         "from": "now-30m",
+         "to": "now"
+      },
+      "timezone": "default",
+      "title": "OpenStack Neutron",
+      "uid": "openstack-neutron"
+   }

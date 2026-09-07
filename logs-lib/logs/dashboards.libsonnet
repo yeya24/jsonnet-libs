@@ -13,18 +13,16 @@ function(
       + g.dashboard.withUid(g.util.string.slugify(title))
       + g.dashboard.withVariables(variables.toArray)
       + g.dashboard.withPanels(
-        (
-          if showLogsVolume then
-            [panels.logsVolume
-             + g.panel.timeSeries.gridPos.withH(6)
-             + g.panel.timeSeries.gridPos.withW(24)]
-          else []
+        g.util.grid.wrapPanels(
+          (
+            if showLogsVolume then
+              [panels.logsVolume]
+            else []
+          )
+          +
+          [
+            panels.logs,
+          ]
         )
-        +
-        [
-          panels.logs
-          + g.panel.logs.gridPos.withH(18)
-          + g.panel.logs.gridPos.withW(24),
-        ]
       ),
   }

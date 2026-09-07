@@ -1,0 +1,828 @@
+{
+      "links": [
+         {
+            "asDropdown": false,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+               "kafka"
+            ],
+            "title": "All Kafka dashboards",
+            "type": "dashboards"
+         }
+      ],
+      "panels": [
+         {
+            "collapsed": false,
+            "gridPos": {
+               "h": 1,
+               "w": 0,
+               "x": 0,
+               "y": 0
+            },
+            "panels": [ ],
+            "title": "Topics",
+            "type": "row"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${datasource}"
+            },
+            "description": "Topic start offset (max): Earliest available offset for each partition due to retention or deletion.  \n  \n\nTopic end offset (max): Latest offset (high water mark) for each partition representing newest available message.  \nContinuously increases as new messages arrive.  \nDifference between end and start offsets indicates total messages available.\n  \n\nMessages in per second (sum): Rate of messages produced to each partition within this topic.  \n  \n\nTopic log size (max): Total size in bytes of data stored on disk for each topic partition.  \nGrows with incoming messages and shrinks with retention cleanup.  \n",
+            "fieldConfig": {
+               "defaults": {
+                  "custom": {
+                     "filterable": false
+                  },
+                  "unit": "none"
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Topic start offset"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "none"
+                        }
+                     ]
+                  },
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Topic end offset"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "none"
+                        }
+                     ]
+                  },
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Messages in per second"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "mps"
+                        }
+                     ]
+                  },
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Topic log size"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "decbytes"
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 24,
+               "x": 0,
+               "y": 1
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${datasource}"
+                  },
+                  "expr": "max by (kafka_cluster,topic,partition) (\n  kafka_log_log_logstartoffset{topic!=\"__consumer_offsets\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\"}\n)",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ topic }}",
+                  "refId": "Topic start offset"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${datasource}"
+                  },
+                  "expr": "max by (kafka_cluster,topic,partition) (\n  kafka_log_log_logendoffset{topic!=\"__consumer_offsets\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\"}\n)",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ topic }}",
+                  "refId": "Topic end offset"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${datasource}"
+                  },
+                  "expr": "sum by (kafka_cluster,topic,partition) (\n  rate(kafka_topic_partition_current_offset{topic!=\"__consumer_offsets\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\"}[$__rate_interval])\n)",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ topic }}",
+                  "refId": "Messages in per second"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${datasource}"
+                  },
+                  "expr": "max by (kafka_cluster,topic,partition) (\n  kafka_log_log_size{topic!=\"__consumer_offsets\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\"}\n)",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ topic }}",
+                  "refId": "Topic log size"
+               }
+            ],
+            "title": "Topic overview",
+            "transformations": [
+               {
+                  "id": "timeSeriesTable"
+               },
+               {
+                  "id": "merge"
+               },
+               {
+                  "id": "renameByRegex",
+                  "options": {
+                     "regex": "Trend #(.*)",
+                     "renamePattern": "$1"
+                  }
+               },
+               {
+                  "id": "filterByValue",
+                  "options": {
+                     "filters": [
+                        {
+                           "config": {
+                              "id": "isNull",
+                              "options": { }
+                           },
+                           "fieldName": "Messages in per second"
+                        }
+                     ],
+                     "match": "all",
+                     "type": "exclude"
+                  }
+               }
+            ],
+            "type": "table"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${datasource}"
+            },
+            "description": "Rate of messages produced to this topic across all partitions.  \nIndicates topic write activity and producer throughput.  \nUse to identify hot topics and understand data flow patterns.\n",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "mps"
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byFrameRefID",
+                        "options": "Messages in per second"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "mps"
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 24,
+               "x": 0,
+               "y": 9
+            },
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${datasource}"
+                  },
+                  "expr": "sum by (kafka_cluster,topic) (\n  rate(kafka_topic_partition_current_offset{topic!=\"__consumer_offsets\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\"}[$__rate_interval])\n)",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ topic }}",
+                  "refId": "Messages in per second"
+               }
+            ],
+            "title": "Messages in per second",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${datasource}"
+            },
+            "description": "Rate of incoming data in bytes written to this topic from producers.  \n",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 1,
+                  "noValue": "No traffic",
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "Bps"
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byFrameRefID",
+                        "options": "Topic bytes in"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "Bps"
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 12,
+               "x": 0,
+               "y": 15
+            },
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${datasource}"
+                  },
+                  "expr": "sum by (kafka_cluster,topic) (\n  rate(kafka_server_brokertopicmetrics_bytesin_total{topic!=\"__consumer_offsets\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\"}[$__rate_interval])\n)\nor\nsum by (kafka_cluster,topic) (\n  rate(kafka_server_brokertopicmetrics_bytesinpersec_count{topic!=\"__consumer_offsets\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\"}[$__rate_interval])\n)\nor\nsum by (kafka_cluster,topic) (\n  rate(kafka_server_brokertopicmetrics_bytesinpersec{topic!=\"__consumer_offsets\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\"}[$__rate_interval])\n)",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ topic }}",
+                  "refId": "Topic bytes in"
+               }
+            ],
+            "title": "Topic bytes in",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${datasource}"
+            },
+            "description": "Rate of outgoing data in bytes read from this topic by consumers.  \n",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 1,
+                  "noValue": "No traffic",
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "Bps"
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byFrameRefID",
+                        "options": "Topic bytes out"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "Bps"
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 12,
+               "x": 12,
+               "y": 15
+            },
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${datasource}"
+                  },
+                  "expr": "sum by (kafka_cluster,topic) (\n  rate(kafka_server_brokertopicmetrics_bytesout_total{topic!=\"__consumer_offsets\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\"}[$__rate_interval])\n)\nor\nsum by (kafka_cluster,topic) (\n  rate(kafka_server_brokertopicmetrics_bytesoutpersec_count{topic!=\"__consumer_offsets\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\"}[$__rate_interval])\n)\nor\nsum by (kafka_cluster,topic) (\n  rate(kafka_server_brokertopicmetrics_bytesoutpersec{topic!=\"__consumer_offsets\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\"}[$__rate_interval])\n)",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ topic }}",
+                  "refId": "Topic bytes out"
+               }
+            ],
+            "title": "Topic bytes out",
+            "type": "timeseries"
+         },
+         {
+            "collapsed": false,
+            "gridPos": {
+               "h": 1,
+               "w": 0,
+               "x": 0,
+               "y": 23
+            },
+            "panels": [ ],
+            "title": "Consumer groups",
+            "type": "row"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${datasource}"
+            },
+            "description": "Consumer group consume rate (avg): Rate at which a consumer group is consuming and committing offsets for a topic.  \nMeasures consumer throughput and processing speed.  \nShould match or exceed producer rate to prevent growing lag.\n  \n\nConsumer group lag (sum): Number of messages a consumer group is behind the latest available offset for a topic partition.  \nHigh or growing lag indicates consumers can't keep up with producer throughput.  \nCritical metric for consumer health and real-time processing requirements.\n  \n\nConsumer group lag in ms (avg): Time lag in milliseconds between message production and consumption for a consumer group.  \nRepresents real-time delay in message processing.  \nMore intuitive than message count lag for understanding business impact of delays.\n",
+            "fieldConfig": {
+               "defaults": {
+                  "custom": {
+                     "filterable": false
+                  },
+                  "unit": "mps"
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Consumer group consume rate"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "mps"
+                        }
+                     ]
+                  },
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Consumer group lag"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "short"
+                        }
+                     ]
+                  },
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Consumer group lag in ms"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "ms"
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 24,
+               "x": 0,
+               "y": 24
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${datasource}"
+                  },
+                  "expr": "avg by (kafka_cluster,consumergroup,topic) (\n  rate(kafka_consumergroup_current_offset{topic!=\"__consumer_offsets\",consumergroup!=\"\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\",consumergroup=~\"$consumergroup\"}[$__rate_interval])\n)",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ consumergroup }} ({{ topic }})",
+                  "refId": "Consumer group consume rate"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${datasource}"
+                  },
+                  "expr": "sum by (kafka_cluster,consumergroup,topic) (\n  kafka_consumergroup_lag{topic!=\"__consumer_offsets\",consumergroup!=\"\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\",consumergroup=~\"$consumergroup\"}\n)\nor\nsum by (kafka_cluster,consumergroup,topic) (\n  kafka_consumergroup_uncommitted_offsets{topic!=\"__consumer_offsets\",consumergroup!=\"\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\",consumergroup=~\"$consumergroup\"}\n)",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ consumergroup }} ({{ topic }})",
+                  "refId": "Consumer group lag"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${datasource}"
+                  },
+                  "expr": "avg by (kafka_cluster,consumergroup,topic) (\n  kafka_consumer_lag_millis{topic!=\"__consumer_offsets\",consumergroup!=\"\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\",consumergroup=~\"$consumergroup\"}\n)",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ consumergroup }} ({{ topic }})",
+                  "refId": "Consumer group lag in ms"
+               }
+            ],
+            "title": "Consumer group overview",
+            "transformations": [
+               {
+                  "id": "timeSeriesTable"
+               },
+               {
+                  "id": "merge"
+               },
+               {
+                  "id": "renameByRegex",
+                  "options": {
+                     "regex": "Trend #(.*)",
+                     "renamePattern": "$1"
+                  }
+               },
+               {
+                  "id": "filterByValue",
+                  "options": {
+                     "filters": [
+                        {
+                           "config": {
+                              "id": "isNotNull",
+                              "options": { }
+                           },
+                           "fieldName": "Consumer group consume rate"
+                        }
+                     ],
+                     "match": "all",
+                     "type": "include"
+                  }
+               }
+            ],
+            "type": "table"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${datasource}"
+            },
+            "description": "Rate at which a consumer group is consuming and committing offsets for a topic.  \nMeasures consumer throughput and processing speed.  \nShould match or exceed producer rate to prevent growing lag.\n",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "mps"
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byFrameRefID",
+                        "options": "Consumer group consume rate"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "mps"
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 8,
+               "x": 0,
+               "y": 32
+            },
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${datasource}"
+                  },
+                  "expr": "avg by (kafka_cluster,consumergroup,topic) (\n  rate(kafka_consumergroup_current_offset{topic!=\"__consumer_offsets\",consumergroup!=\"\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\",consumergroup=~\"$consumergroup\"}[$__rate_interval])\n)",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ consumergroup }} ({{ topic }})",
+                  "refId": "Consumer group consume rate"
+               }
+            ],
+            "title": "Consumer group consume rate",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${datasource}"
+            },
+            "description": "Number of messages a consumer group is behind the latest available offset for a topic partition.  \nHigh or growing lag indicates consumers can't keep up with producer throughput.  \nCritical metric for consumer health and real-time processing requirements.\n",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "short"
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byFrameRefID",
+                        "options": "Consumer group lag"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "short"
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 8,
+               "x": 8,
+               "y": 32
+            },
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${datasource}"
+                  },
+                  "expr": "sum by (kafka_cluster,consumergroup,topic) (\n  kafka_consumergroup_lag{topic!=\"__consumer_offsets\",consumergroup!=\"\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\",consumergroup=~\"$consumergroup\"}\n)\nor\nsum by (kafka_cluster,consumergroup,topic) (\n  kafka_consumergroup_uncommitted_offsets{topic!=\"__consumer_offsets\",consumergroup!=\"\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\",consumergroup=~\"$consumergroup\"}\n)",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ consumergroup }} ({{ topic }})",
+                  "refId": "Consumer group lag"
+               }
+            ],
+            "title": "Consumer group lag",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${datasource}"
+            },
+            "description": "Time lag in milliseconds between message production and consumption for a consumer group.  \nRepresents real-time delay in message processing.  \nMore intuitive than message count lag for understanding business impact of delays.\n",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "ms"
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byFrameRefID",
+                        "options": "Consumer group lag in ms"
+                     },
+                     "properties": [
+                        {
+                           "id": "unit",
+                           "value": "ms"
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 8,
+               "x": 16,
+               "y": 32
+            },
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${datasource}"
+                  },
+                  "expr": "avg by (kafka_cluster,consumergroup,topic) (\n  kafka_consumer_lag_millis{topic!=\"__consumer_offsets\",consumergroup!=\"\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\",consumergroup=~\"$consumergroup\"}\n)",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ consumergroup }} ({{ topic }})",
+                  "refId": "Consumer group lag in ms"
+               }
+            ],
+            "title": "Consumer group lag in ms",
+            "type": "timeseries"
+         }
+      ],
+      "schemaVersion": 39,
+      "tags": [
+         "kafka"
+      ],
+      "templating": {
+         "list": [
+            {
+               "label": "Data source",
+               "name": "datasource",
+               "query": "prometheus",
+               "regex": "",
+               "type": "datasource"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${datasource}"
+               },
+               "includeAll": true,
+               "label": "Kafka_cluster",
+               "multi": true,
+               "name": "kafka_cluster",
+               "query": "label_values({__name__=~\"kafka_log_log_logstartoffset\",topic!=\"__consumer_offsets\"}, kafka_cluster)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${datasource}"
+               },
+               "includeAll": true,
+               "label": "Topic",
+               "multi": true,
+               "name": "topic",
+               "query": "label_values({__name__=~\"kafka_log_log_logstartoffset\",topic!=\"__consumer_offsets\",kafka_cluster=~\"$kafka_cluster\"}, topic)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${datasource}"
+               },
+               "includeAll": true,
+               "label": "Consumergroup",
+               "multi": true,
+               "name": "consumergroup",
+               "query": "label_values({__name__=~\"kafka_consumergroup_lag|kafka_consumergroup_uncommitted_offsets\",topic!=\"__consumer_offsets\",consumergroup!=\"\",kafka_cluster=~\"$kafka_cluster\",topic=~\"$topic\"}, consumergroup)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            }
+         ]
+      },
+      "time": {
+         "from": "now-6h",
+         "to": "now"
+      },
+      "timezone": "utc",
+      "title": "Kafka topic overview",
+      "uid": "kafka-kafka-topic-dashboard"
+   }

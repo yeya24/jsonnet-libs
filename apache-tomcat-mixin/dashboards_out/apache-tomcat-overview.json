@@ -1,0 +1,1520 @@
+{
+      "annotations": {
+         "list": [ ]
+      },
+      "editable": false,
+      "id": null,
+      "links": [
+         {
+            "keepTime": true,
+            "title": "Apache Tomcat hosts",
+            "type": "link",
+            "url": "/d/apachetomcat_hosts"
+         },
+         {
+            "keepTime": true,
+            "title": "Apache Tomcat logs",
+            "type": "link",
+            "url": "/d/apachetomcat-logs"
+         },
+         {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+               "apache-tomcat-mixin"
+            ],
+            "title": "All dashboards",
+            "type": "dashboards"
+         }
+      ],
+      "panels": [
+         {
+            "collapsed": false,
+            "gridPos": {
+               "h": 1,
+               "w": 0,
+               "x": 0,
+               "y": 0
+            },
+            "id": 1,
+            "panels": [ ],
+            "title": "Overview",
+            "type": "row"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The number of Apache Tomcat clusters.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "text",
+                     "mode": "fixed"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  },
+                  "unit": "none"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 4,
+               "x": 0,
+               "y": 1
+            },
+            "id": 2,
+            "options": {
+               "graphMode": "none",
+               "reduceOptions": {
+                  "calcs": [
+                     "lastNotNull"
+                  ]
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "count(count by (cluster) (jvm_memory_usage_used_bytes{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}))",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{instance}}: Clusters",
+                  "refId": "Number of clusters"
+               }
+            ],
+            "title": "Number of clusters",
+            "type": "stat"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The number of Apache Tomcat nodes.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "text",
+                     "mode": "fixed"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  },
+                  "unit": "none"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 4,
+               "x": 4,
+               "y": 1
+            },
+            "id": 3,
+            "options": {
+               "graphMode": "none",
+               "reduceOptions": {
+                  "calcs": [
+                     "lastNotNull"
+                  ]
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "count(count by (instance) (jvm_memory_usage_used_bytes{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}))",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{instance}}: Nodes",
+                  "refId": "Number of nodes"
+               }
+            ],
+            "title": "Number of nodes",
+            "type": "stat"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The CPU usage of the JVM of the instance.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "continuous-BlYlRd"
+                  },
+                  "decimals": 1,
+                  "max": 100,
+                  "min": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  },
+                  "unit": "percent"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 4,
+               "x": 8,
+               "y": 1
+            },
+            "id": 4,
+            "options": {
+               "colorMode": "value",
+               "reduceOptions": {
+                  "calcs": [
+                     "lastNotNull"
+                  ]
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "jvm_process_cpu_load{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"} * 100",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ instance }}",
+                  "refId": "CPU usage"
+               }
+            ],
+            "title": "CPU usage",
+            "type": "stat"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The memory utilization of the JVM of the instance.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "continuous-BlYlRd"
+                  },
+                  "decimals": 1,
+                  "max": 100,
+                  "min": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  },
+                  "unit": "percent"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 4,
+               "x": 12,
+               "y": 1
+            },
+            "id": 5,
+            "options": {
+               "colorMode": "value",
+               "reduceOptions": {
+                  "calcs": [
+                     "lastNotNull"
+                  ]
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum(jvm_memory_usage_used_bytes{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}) by (job, instance) / clamp_min(jvm_physical_memory_bytes{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}, 1) * 100",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{instance}}: Memory utilization",
+                  "refId": "Memory utilization"
+               }
+            ],
+            "title": "Memory utilization",
+            "type": "stat"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The network sent for an Apache Tomcat instance.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "text",
+                     "mode": "fixed"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  },
+                  "unit": "Bps"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 4,
+               "x": 16,
+               "y": 1
+            },
+            "id": 6,
+            "options": {
+               "graphMode": "none",
+               "reduceOptions": {
+                  "calcs": [
+                     "lastNotNull"
+                  ]
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "rate(tomcat_bytessent_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}[$__rate_interval])",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{ instance }} - {{protocol}} - {{port}}",
+                  "refId": "Traffic sent rate"
+               }
+            ],
+            "title": "Network sent",
+            "type": "stat"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The network received for an Apache Tomcat instance.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "text",
+                     "mode": "fixed"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  },
+                  "unit": "Bps"
+               }
+            },
+            "gridPos": {
+               "h": 6,
+               "w": 4,
+               "x": 20,
+               "y": 1
+            },
+            "id": 7,
+            "options": {
+               "graphMode": "none",
+               "reduceOptions": {
+                  "calcs": [
+                     "lastNotNull"
+                  ]
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "rate(tomcat_bytesreceived_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}[$__rate_interval])",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{ instance }} - {{protocol}} - {{port}}",
+                  "refId": "Traffic received rate"
+               }
+            ],
+            "title": "Network received",
+            "type": "stat"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Overview of Apache Tomcat instances with key metrics.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  }
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Instance"
+                     },
+                     "properties": [
+                        {
+                           "id": "custom.filterable",
+                           "value": true
+                        }
+                     ]
+                  },
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Cluster"
+                     },
+                     "properties": [
+                        {
+                           "id": "custom.displayMode",
+                           "value": "basic"
+                        },
+                        {
+                           "id": "custom.filterable",
+                           "value": true
+                        },
+                        {
+                           "id": "custom.noValue",
+                           "value": "NA"
+                        }
+                     ]
+                  },
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "CPU usage"
+                     },
+                     "properties": [
+                        {
+                           "id": "custom.displayMode",
+                           "value": "basic"
+                        },
+                        {
+                           "id": "color",
+                           "value": {
+                              "fixedColor": "#5794f2",
+                              "mode": "continuous-BlYlRd"
+                           }
+                        },
+                        {
+                           "id": "custom.fillOpacity",
+                           "value": 30
+                        },
+                        {
+                           "id": "custom.gradientMode",
+                           "value": "scheme"
+                        },
+                        {
+                           "id": "custom.lineInterpolation",
+                           "value": "smooth"
+                        },
+                        {
+                           "id": "custom.lineWidth",
+                           "value": 2
+                        },
+                        {
+                           "id": "custom.showPoints",
+                           "value": "never"
+                        },
+                        {
+                           "id": "decimals",
+                           "value": 1
+                        },
+                        {
+                           "id": "max",
+                           "value": 100
+                        },
+                        {
+                           "id": "min",
+                           "value": 0
+                        },
+                        {
+                           "id": "thresholds",
+                           "value": {
+                              "mode": "absolute",
+                              "steps": [ ]
+                           }
+                        },
+                        {
+                           "id": "unit",
+                           "value": "percent"
+                        }
+                     ]
+                  },
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Traffic sent rate"
+                     },
+                     "properties": [
+                        {
+                           "id": "custom.displayMode",
+                           "value": "basic"
+                        },
+                        {
+                           "id": "color",
+                           "value": {
+                              "fixedColor": "#5794f2",
+                              "mode": "palette-classic"
+                           }
+                        },
+                        {
+                           "id": "custom.fillOpacity",
+                           "value": 30
+                        },
+                        {
+                           "id": "custom.gradientMode",
+                           "value": "opacity"
+                        },
+                        {
+                           "id": "custom.lineInterpolation",
+                           "value": "smooth"
+                        },
+                        {
+                           "id": "custom.lineWidth",
+                           "value": 2
+                        },
+                        {
+                           "id": "custom.showPoints",
+                           "value": "never"
+                        },
+                        {
+                           "id": "decimals",
+                           "value": 1
+                        },
+                        {
+                           "id": "noValue",
+                           "value": "No traffic"
+                        },
+                        {
+                           "id": "thresholds",
+                           "value": {
+                              "mode": "absolute",
+                              "steps": [ ]
+                           }
+                        },
+                        {
+                           "id": "unit",
+                           "value": "bps"
+                        }
+                     ]
+                  },
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Traffic received rate"
+                     },
+                     "properties": [
+                        {
+                           "id": "custom.displayMode",
+                           "value": "basic"
+                        },
+                        {
+                           "id": "color",
+                           "value": {
+                              "fixedColor": "#5794f2",
+                              "mode": "palette-classic"
+                           }
+                        },
+                        {
+                           "id": "custom.fillOpacity",
+                           "value": 30
+                        },
+                        {
+                           "id": "custom.gradientMode",
+                           "value": "opacity"
+                        },
+                        {
+                           "id": "custom.lineInterpolation",
+                           "value": "smooth"
+                        },
+                        {
+                           "id": "custom.lineWidth",
+                           "value": 2
+                        },
+                        {
+                           "id": "custom.showPoints",
+                           "value": "never"
+                        },
+                        {
+                           "id": "decimals",
+                           "value": 1
+                        },
+                        {
+                           "id": "noValue",
+                           "value": "No traffic"
+                        },
+                        {
+                           "id": "thresholds",
+                           "value": {
+                              "mode": "absolute",
+                              "steps": [ ]
+                           }
+                        },
+                        {
+                           "id": "unit",
+                           "value": "bps"
+                        }
+                     ]
+                  },
+                  {
+                     "matcher": {
+                        "id": "byName",
+                        "options": "Memory utilization"
+                     },
+                     "properties": [
+                        {
+                           "id": "custom.displayMode",
+                           "value": "basic"
+                        },
+                        {
+                           "id": "color",
+                           "value": {
+                              "fixedColor": "#5794f2",
+                              "mode": "continuous-BlYlRd"
+                           }
+                        },
+                        {
+                           "id": "custom.fillOpacity",
+                           "value": 30
+                        },
+                        {
+                           "id": "custom.gradientMode",
+                           "value": "scheme"
+                        },
+                        {
+                           "id": "custom.lineInterpolation",
+                           "value": "smooth"
+                        },
+                        {
+                           "id": "custom.lineWidth",
+                           "value": 2
+                        },
+                        {
+                           "id": "custom.showPoints",
+                           "value": "never"
+                        },
+                        {
+                           "id": "decimals",
+                           "value": 1
+                        },
+                        {
+                           "id": "max",
+                           "value": 100
+                        },
+                        {
+                           "id": "min",
+                           "value": 0
+                        },
+                        {
+                           "id": "thresholds",
+                           "value": {
+                              "mode": "absolute",
+                              "steps": [ ]
+                           }
+                        },
+                        {
+                           "id": "unit",
+                           "value": "percent"
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 24,
+               "x": 0,
+               "y": 9
+            },
+            "id": 8,
+            "options": {
+               "enablePagination": true
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "jvm_process_cpu_load{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"} * 100",
+                  "format": "table",
+                  "instant": true,
+                  "legendFormat": "{{ instance }}",
+                  "refId": "cpu_usage"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum(jvm_memory_usage_used_bytes{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}) by (job, instance) / clamp_min(jvm_physical_memory_bytes{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}, 1) * 100",
+                  "format": "table",
+                  "instant": true,
+                  "legendFormat": "{{instance}}: Memory utilization",
+                  "refId": "memory_utilization"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "rate(tomcat_bytessent_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}[$__rate_interval])",
+                  "format": "table",
+                  "instant": true,
+                  "interval": "2m",
+                  "legendFormat": "{{ instance }} - {{protocol}} - {{port}}",
+                  "refId": "traffic_sent_rate"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "rate(tomcat_bytesreceived_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}[$__rate_interval])",
+                  "format": "table",
+                  "instant": true,
+                  "interval": "2m",
+                  "legendFormat": "{{ instance }} - {{protocol}} - {{port}}",
+                  "refId": "traffic_received_rate"
+               }
+            ],
+            "title": "Instances",
+            "transformations": [
+               {
+                  "id": "joinByField",
+                  "options": {
+                     "byField": "instance",
+                     "mode": "outer"
+                  }
+               },
+               {
+                  "id": "filterFieldsByName",
+                  "options": {
+                     "include": {
+                        "names": [
+                           "instance",
+                           "job 1",
+                           "cluster",
+                           "Value #cpu_usage",
+                           "Value #memory_utilization",
+                           "Value #traffic_sent_rate",
+                           "Value #traffic_received_rate"
+                        ]
+                     }
+                  }
+               },
+               {
+                  "id": "organize",
+                  "options": {
+                     "includeByName": {
+                        "Value #cpu_usage": { },
+                        "Value #memory_utilization": { },
+                        "Value #traffic_received_rate": { },
+                        "Value #traffic_sent_rate": { },
+                        "cluster": { },
+                        "instance": { },
+                        "job 1": { }
+                     },
+                     "indexByName": {
+                        "Value #cpu_usage": 3,
+                        "Value #memory_utilization": 4,
+                        "Value #traffic_received_rate": 6,
+                        "Value #traffic_sent_rate": 5,
+                        "cluster": 2,
+                        "instance": 0,
+                        "job 1": 1
+                     },
+                     "renameByName": {
+                        "Value #cpu_usage": "CPU usage",
+                        "Value #memory_utilization": "Memory utilization",
+                        "Value #traffic_received_rate": "Traffic received rate",
+                        "Value #traffic_sent_rate": "Traffic sent rate",
+                        "cluster": "Cluster",
+                        "instance": "Instance",
+                        "job 1": "Job"
+                     }
+                  }
+               }
+            ],
+            "type": "table"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The memory usage of the JVM of the instance.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "min": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "bytes"
+               },
+               "overrides": [
+                  {
+                     "matcher": {
+                        "id": "byRegexp",
+                        "options": ".*(T|t)otal.*"
+                     },
+                     "properties": [
+                        {
+                           "id": "color",
+                           "value": {
+                              "fixedColor": "#ffb357",
+                              "mode": "fixed"
+                           }
+                        },
+                        {
+                           "id": "custom.fillOpacity",
+                           "value": 0
+                        },
+                        {
+                           "id": "custom.lineStyle",
+                           "value": {
+                              "dash": [
+                                 10,
+                                 10
+                              ],
+                              "fill": "dash"
+                           }
+                        }
+                     ]
+                  }
+               ]
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 0,
+               "y": 17
+            },
+            "id": 9,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "jvm_memory_usage_used_bytes{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ instance }} - {{area}}",
+                  "refId": "Memory usage"
+               }
+            ],
+            "title": "Memory usage",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The CPU usage of the JVM process.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "continuous-BlYlRd"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "scheme",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 1,
+                  "max": 100,
+                  "min": 0,
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "percent"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 12,
+               "y": 17
+            },
+            "id": 10,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "jvm_process_cpu_load{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"} * 100",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ instance }}",
+                  "refId": "CPU usage"
+               }
+            ],
+            "title": "CPU usage",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The traffic sent for a Tomcat connector.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 1,
+                  "noValue": "No traffic",
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "bps"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 0,
+               "y": 25
+            },
+            "id": 11,
+            "options": {
+               "legend": {
+                  "asTable": true,
+                  "calcs": [ ],
+                  "displayMode": "list",
+                  "placement": "right"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum(rate(tomcat_bytessent_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}[$__rate_interval])) by (job, instance)",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{ instance }} - total",
+                  "refId": "Traffic sent total"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "rate(tomcat_bytessent_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}[$__rate_interval])",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{ instance }} - {{protocol}} - {{port}}",
+                  "refId": "Traffic sent rate"
+               }
+            ],
+            "title": "Traffic sent",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The traffic received for a Tomcat connector.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "decimals": 1,
+                  "noValue": "No traffic",
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "bps"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 12,
+               "y": 25
+            },
+            "id": 12,
+            "options": {
+               "legend": {
+                  "asTable": true,
+                  "calcs": [ ],
+                  "displayMode": "list",
+                  "placement": "right"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum(rate(tomcat_bytesreceived_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}[$__rate_interval])) by (job, instance)",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{ instance }} - total",
+                  "refId": "Traffic received total"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "rate(tomcat_bytesreceived_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}[$__rate_interval])",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{ instance }} - {{protocol}} - {{port}}",
+                  "refId": "Traffic received rate"
+               }
+            ],
+            "title": "Traffic received",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The total requests and errors for a Tomcat connector.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "r/s"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 0,
+               "y": 33
+            },
+            "id": 13,
+            "options": {
+               "legend": {
+                  "asTable": true,
+                  "calcs": [ ],
+                  "displayMode": "list",
+                  "placement": "right"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum(rate(tomcat_requestcount_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}[$__rate_interval])) by (job, instance)",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{ instance }} - total requests",
+                  "refId": "Requests total"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "rate(tomcat_requestcount_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}[$__rate_interval])",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{ instance }} - {{protocol}} - {{port}} - requests",
+                  "refId": "Requests rate"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum(rate(tomcat_errorcount_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}[$__rate_interval])) by (job, instance)",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{ instance }} - total errors",
+                  "refId": "Requests errors"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "rate(tomcat_errorcount_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}[$__rate_interval])",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{ instance }} - {{protocol}} - {{port}} - errors",
+                  "refId": "Requests errors rate"
+               }
+            ],
+            "title": "Requests",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The average time taken to process recent requests for a Tomcat connector.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "ms"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 12,
+               "y": 33
+            },
+            "id": 14,
+            "options": {
+               "legend": {
+                  "asTable": true,
+                  "calcs": [ ],
+                  "displayMode": "list",
+                  "placement": "right"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum(increase(tomcat_processingtime_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}[$__interval:] offset -$__interval) / clamp_min(increase(tomcat_requestcount_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}[$__interval:] offset -$__interval), 1)) by (job, instance)",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{ instance }} - total",
+                  "refId": "Processing time total"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "increase(tomcat_processingtime_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}[$__interval:] offset -$__interval) / clamp_min(increase(tomcat_requestcount_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}[$__interval:] offset -$__interval), 1)",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "2m",
+                  "legendFormat": "{{ instance }} - {{protocol}} - {{port}}",
+                  "refId": "Processing time rate"
+               }
+            ],
+            "title": "Processing time",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "The number of various threads used by a Tomcat connector.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  }
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 24,
+               "x": 0,
+               "y": 41
+            },
+            "id": 15,
+            "options": {
+               "legend": {
+                  "asTable": true,
+                  "calcs": [ ],
+                  "displayMode": "list",
+                  "placement": "right"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.0.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum(tomcat_threadpool_connectioncount{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}) by (job, instance)",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ instance }} - total connections",
+                  "refId": "Total connection threads"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum(tomcat_threadpool_pollerthreadcount{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}) by (job, instance)",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ instance }} - poller total",
+                  "refId": "Total poller threads"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum(tomcat_threadpool_keepalivecount{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}) by (job, instance)",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ instance }} - idle total",
+                  "refId": "Total idle threads"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum(tomcat_threadpool_currentthreadcount{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}) by (job, instance)",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ instance }} - active total",
+                  "refId": "Total active threads"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "tomcat_threadpool_connectioncount{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ instance }} - {{protocol}} - {{port}} - connections",
+                  "refId": "Connection threads"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "tomcat_threadpool_pollerthreadcount{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ instance }} - {{protocol}} - {{port}} - poller",
+                  "refId": "Poller threads"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "tomcat_threadpool_keepalivecount{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ instance }} - {{protocol}} - {{port}} - idle",
+                  "refId": "Idle threads"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "tomcat_threadpool_currentthreadcount{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\", protocol=~\"$protocol\", port=~\"$port\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ instance }} - {{protocol}} - {{port}} - active",
+                  "refId": "Active threads"
+               }
+            ],
+            "title": "Threads",
+            "type": "timeseries"
+         }
+      ],
+      "refresh": "30s",
+      "schemaVersion": 39,
+      "tags": [
+         "apache-tomcat-mixin"
+      ],
+      "templating": {
+         "list": [
+            {
+               "label": "Prometheus data source",
+               "name": "prometheus_datasource",
+               "query": "prometheus",
+               "regex": "(?!grafanacloud-usage|grafanacloud-ml-metrics).+",
+               "type": "datasource"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Job",
+               "multi": true,
+               "name": "job",
+               "query": "label_values(tomcat_session_sessioncounter_total{}, job)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".*",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Cluster",
+               "multi": true,
+               "name": "cluster",
+               "query": "label_values(tomcat_session_sessioncounter_total{job=~\"$job\"}, cluster)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Instance",
+               "multi": true,
+               "name": "instance",
+               "query": "label_values(tomcat_session_sessioncounter_total{job=~\"$job\",cluster=~\"$cluster\"}, instance)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "hide": 2,
+               "label": "Loki data source",
+               "name": "loki_datasource",
+               "query": "loki",
+               "regex": "(?!grafanacloud.+usage-insights|grafanacloud.+alert-state-history).+",
+               "type": "datasource"
+            },
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "multi": true,
+               "name": "protocol",
+               "query": "label_values(tomcat_bytesreceived_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}, protocol)",
+               "refresh": 2,
+               "type": "query"
+            },
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "multi": true,
+               "name": "port",
+               "query": "label_values(tomcat_bytesreceived_total{job=~\"$job\",cluster=~\"$cluster\",instance=~\"$instance\"}, port)",
+               "refresh": 2,
+               "type": "query"
+            }
+         ]
+      },
+      "time": {
+         "from": "now-30m",
+         "to": "now"
+      },
+      "timezone": "default",
+      "title": "Apache Tomcat overview",
+      "uid": "apachetomcat_overview"
+   }

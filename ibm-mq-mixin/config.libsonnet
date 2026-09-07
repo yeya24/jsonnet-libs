@@ -1,20 +1,38 @@
 {
-  _config+:: {
-    enableMultiCluster: false,
-    ibmmqSelector: if self.enableMultiCluster then 'job=~"$job", cluster=~"$cluster"' else 'job=~"$job"',
-    dashboardTags: ['ibm-mq-mixin'],
-    dashboardPeriod: 'now-1h',
-    dashboardTimezone: 'default',
-    dashboardRefresh: '1m',
-    logExpression: if self.enableMultiCluster then 'job=~"$job", cluster=~"$cluster"'
-    else 'job=~"$job"',
+  local this = self,
+  filteringSelector: '',  // set to apply static filters to all queries and alerts, i.e. job="bar"
+  groupLabels: ['cluster', 'job', 'mq_cluster'],
+  instanceLabels: ['instance', 'qmgr'],
+  uid: 'ibm-mq',
 
-    //alerts thresholds
-    alertsExpiredMessages: 2,  //count
-    alertsStaleMessagesSeconds: 300,  //seconds
-    alertsLowDiskSpace: 5,  //percentage: 0-100
-    alertsHighQueueManagerCpuUsage: 85,  //percentage: 0-100
+  dashboardNamePrefix: 'IBM MQ',
+  dashboardTags: ['ibm-mq-mixin'],
+  dashboardPeriod: 'now-1h',
+  dashboardTimezone: 'default',
+  dashboardRefresh: '1m',
 
-    enableLokiLogs: true,
+  // Data source configuration
+  metricsSource: 'prometheus',
+  enableLokiLogs: true,
+  customAllValue: '.*',  // Override this as desired. '.+' is a good option if you want to ensure a label is present.
+  logLabels: this.groupLabels,
+  extraLogLabels: [],
+  logsVolumeGroupBy: 'level',
+  showLogsVolume: true,
+
+  // Alerts configuration
+  alertsExpiredMessages: 2,  //count
+  alertsStaleMessagesSeconds: 300,  //seconds
+  alertsLowDiskSpace: 5,  //percentage: 0-100
+  alertsHighQueueManagerCpuUsage: 85,  //percentage: 0-100
+
+  // Multi-cluster support (for backward compatibility)
+  enableMultiCluster: false,
+
+  signals+: {
+    cluster: (import './signals/cluster.libsonnet')(this),
+    queueManager: (import './signals/queue-manager.libsonnet')(this),
+    queue: (import './signals/queue.libsonnet')(this),
+    topic: (import './signals/topics.libsonnet')(this),
   },
 }

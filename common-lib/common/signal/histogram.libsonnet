@@ -8,36 +8,38 @@ base {
     name,
     type,
     unit,
+    nameShort,
     description,
-    expr,
-    exprWrappers,
     aggLevel,
     aggFunction,
-    aggKeepLabels,
     vars,
     datasource,
-    valueMapping,
-    legendCustomTemplate,
-    rangeFunction,
+    sourceMaps,
   ):
     base.new(
       name,
       type,
       unit,
+      nameShort,
       description,
-      expr,
-      exprWrappers,
       aggLevel,
       aggFunction,
-      aggKeepLabels,
       vars,
       datasource,
-      valueMapping,
-      legendCustomTemplate,
-      rangeFunction,
+      sourceMaps=sourceMaps,
     )
 
     {
+      local this = self,
+      quantile:: 0.95,
+      signalName+:: ' (p%.0f)' % (this.quantile * 100),
+      nameShort+:: ' (p%.0f)' % (this.quantile * 100),
+      wrapDescription()::
+        this.nameShort + ': ' + this.description + '  \n',
+      withQuantile(quantile=0.95):
+        self
+        {
+          quantile:: quantile,
+        },
     },
-
 }

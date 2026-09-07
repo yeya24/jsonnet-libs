@@ -1,16 +1,34 @@
 {
-  _config+:: {
-    dashboardTags: ['apache-tomcat-mixin'],
-    dashboardPeriod: 'now-1h',
-    dashboardTimezone: 'default',
-    dashboardRefresh: '1m',
+  local this = self,
+  filteringSelector: '',
+  groupLabels: ['job', 'cluster'],
+  logLabels: [],
+  instanceLabels: ['instance'],
 
-    //alert thresholds
-    ApacheTomcatAlertsCriticalCpuUsage: 80,  //%
-    ApacheTomcatAlertsCriticalMemoryUsage: 80,  //%
-    ApacheTomcatAlertsCriticalRequestErrorPercentage: 5,  //%
-    ApacheTomcatAlertsWarningProcessingTime: 300,  //ms
+  uid: 'apache-tomcat',
+  dashboardTags: [self.uid + '-mixin'],
+  dashboardNamePrefix: 'Apache Tomcat',
+  dashboardPeriod: 'now-1h',
+  dashboardTimezone: 'default',
+  dashboardRefresh: '1m',
+  metricsSource: ['prometheus'],  // metrics source for signals
 
-    enableLokiLogs: true,
+
+  // Logging configuration
+  enableLokiLogs: true,
+  customAllValue: '.*',  // Override this as desired. '.+' is a good option if you want to ensure a label is present.
+  extraLogLabels: ['level'],  // Required by logs-lib
+  logsVolumeGroupBy: 'level',
+  showLogsVolume: true,
+
+  // alert thresholds
+  alertsCriticalCpuUsage: 80,  //%
+  alertsCriticalMemoryUsage: 80,  //%
+  alertsCriticalRequestErrorPercentage: 5,  //%
+  alertsWarningProcessingTime: 300,  //ms
+
+  signals+: {
+    overview: (import './signals/overview.libsonnet')(this),
+    hosts: (import './signals/hosts.libsonnet')(this),
   },
 }

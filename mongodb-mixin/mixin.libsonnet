@@ -1,16 +1,34 @@
+local mixinlib = import './main.libsonnet';
+local config = (import './config.libsonnet');
+local util = import 'grafana-cloud-integration-utils/util.libsonnet';
+
+
+local mixin = mixinlib.new()
+              + mixinlib.withConfigMixin(
+                {
+                  filteringSelector: config.filteringSelector,
+                  uid: config.uid,
+                  enableLokiLogs: config.enableLokiLogs,
+                }
+              );
+
+local label_patch = {
+  mongodb_cluster+: {
+    label: 'MongoDB cluster',
+  },
+  service_name+: {
+    label: 'Service name',
+  },
+};
+
 {
-  grafanaDashboards: {
-    'MongoDB_Instance.json': (import 'dashboards/MongoDB_Instance.json'),
-    'MongoDB_ReplicaSet.json': (import 'dashboards/MongoDB_ReplicaSet.json'),
-    'MongoDB_Cluster.json': (import 'dashboards/MongoDB_Cluster.json'),
-  },
+  grafanaDashboards+:: {
+    [fname]:
+      local dashboard = util.decorate_dashboard(mixin.grafana.dashboards[fname], tags=config.dashboardTags);
+      dashboard + util.patch_variables(dashboard, label_patch)
 
-  // Helper function to ensure that we don't override other rules, by forcing
-  // the patching of the groups list, and not the overall rules object.
-  local importRules(rules) = {
-    groups+: std.parseYaml(rules).groups,
+    for fname in std.objectFields(mixin.grafana.dashboards)
   },
-
-  prometheusAlerts+:
-    importRules(importstr 'alerts/mongodbAlerts.yaml'),
+  prometheusAlerts+:: mixin.prometheus.alerts,
+  prometheusRules+:: mixin.prometheus.recordingRules,
 }

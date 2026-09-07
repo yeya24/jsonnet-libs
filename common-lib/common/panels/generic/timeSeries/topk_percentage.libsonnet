@@ -1,4 +1,5 @@
 local g = import '../../../g.libsonnet';
+local tokens = import '../../../tokens/main.libsonnet';
 local base = import './base.libsonnet';
 local generic = import './main.libsonnet';
 local timeSeries = g.panel.timeSeries;
@@ -24,16 +25,11 @@ base {
                       );
     local meanTarget = target
                        { expr: 'avg(' + target.expr + ')' }
-                       + g.query.prometheus.withLegendFormat('Mean');
+                       + g.query.prometheus.withLegendFormat('Mean')
+                       + g.query.prometheus.withRefId('Mean');
     super.new(title, targets=[topTarget, meanTarget], description=description)
     + self.withDataLink(instanceLabels, drillDownDashboardUid),
-  withDataLink(instanceLabels, drillDownDashboardUid):
-    standardOptions.withLinks(
-      {
-        url: 'd/' + drillDownDashboardUid + '?' + std.join('&', std.map(function(l) 'var-%s=${__field.labels.%s}' % [l, l], instanceLabels)) + '&${__url_time_range}',
-        title: 'Drill down to this instance',
-      }
-    ),
+
   stylize(allLayers=true):
     (if allLayers then super.stylize() else {})
     + generic.percentage.stylize(allLayers=false)
@@ -56,8 +52,8 @@ base {
           }
         )
         + fieldConfig.defaults.custom.withFillOpacity(0)
-        + timeSeries.standardOptions.color.withMode('fixed')
-        + timeSeries.standardOptions.color.withFixedColor('light-purple'),
+        + timeSeries.standardOptions.color.withMode(tokens.base.colors.mode.single)
+        + timeSeries.standardOptions.color.withFixedColor(tokens.base.colors.palette.threshold),
       )
     ),
 }

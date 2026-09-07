@@ -1,0 +1,932 @@
+{
+      "annotations": {
+         "list": [ ]
+      },
+      "editable": false,
+      "id": null,
+      "links": [
+         {
+            "keepTime": true,
+            "title": "Aerospike namespace overview",
+            "type": "link",
+            "url": "/d/aerospike_namespace_overview"
+         },
+         {
+            "keepTime": true,
+            "title": "Aerospike overview",
+            "type": "link",
+            "url": "/d/aerospike_overview"
+         },
+         {
+            "keepTime": true,
+            "title": "Aerospike logs",
+            "type": "link",
+            "url": "/d/aerospike-logs"
+         },
+         {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+               "aerospike"
+            ],
+            "title": "All dashboards",
+            "type": "dashboards"
+         }
+      ],
+      "panels": [
+         {
+            "collapsed": false,
+            "gridPos": {
+               "h": 1,
+               "w": 0,
+               "x": 0,
+               "y": 0
+            },
+            "id": 1,
+            "panels": [ ],
+            "title": "Instance",
+            "type": "row"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Number of unavailable partitions in this Aerospike instance",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "green",
+                     "mode": "fixed"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  },
+                  "unit": "short"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 6,
+               "x": 0,
+               "y": 1
+            },
+            "id": 2,
+            "options": {
+               "graphMode": "none",
+               "reduceOptions": {
+                  "calcs": [
+                     "lastNotNull"
+                  ]
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum by(instance,ns) (aerospike_namespace_unavailable_partitions{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"})",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{instance}} {{ns}}",
+                  "refId": "Unavailable partitions"
+               }
+            ],
+            "title": "Unavailable partitions",
+            "type": "bargauge"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Memory utilization in an Aerospike node.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 75,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "percent"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 18,
+               "x": 6,
+               "y": 1
+            },
+            "id": 3,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "100 - aerospike_node_stats_system_free_mem_pct{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{instance}} {{ns}}",
+                  "refId": "Node memory usage"
+               }
+            ],
+            "title": "Memory usage",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Number of dead partitions in this Aerospike instance",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "green",
+                     "mode": "fixed"
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [
+                        {
+                           "color": "#5794f2",
+                           "value": null
+                        }
+                     ]
+                  },
+                  "unit": "short"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 6,
+               "x": 0,
+               "y": 9
+            },
+            "id": 4,
+            "options": {
+               "graphMode": "none",
+               "reduceOptions": {
+                  "calcs": [
+                     "lastNotNull"
+                  ]
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum by(instance,ns) (aerospike_namespace_dead_partitions{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"})",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{instance}} {{ns}}",
+                  "refId": "Dead partitions"
+               }
+            ],
+            "title": "Dead partitions",
+            "type": "bargauge"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Disk utilization per namespace on an Aerospike node. Compatible with Aerospike versions < 7.0 using legacy metrics.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "percent"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 18,
+               "x": 6,
+               "y": 9
+            },
+            "id": 5,
+            "options": {
+               "legend": {
+                  "asTable": true,
+                  "calcs": [ ],
+                  "displayMode": "list",
+                  "placement": "right"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "100 - sum by (job,aerospike_cluster,cluster,instance,ns) (aerospike_namespace_device_free_pct{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"})\nor\nsum by (job,aerospike_cluster,cluster,instance,ns) (aerospike_namespace_data_used_pct{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\", storage_engine=\"device\"})",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{instance}} {{ns}}",
+                  "refId": "Disk usage"
+               }
+            ],
+            "title": "Disk usage (%)",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Fragmentation rate for the jemalloc heap in an Aerospike node.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 75,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "percent"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 0,
+               "y": 17
+            },
+            "id": 6,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "aerospike_node_stats_heap_efficiency_pct{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{instance}} {{ns}}",
+                  "refId": "Heap memory efficiency"
+               }
+            ],
+            "title": "Heap memory efficiency",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Number of active connections to this Aerospike instance.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 75,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "short"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 12,
+               "y": 17
+            },
+            "id": 7,
+            "options": {
+               "legend": {
+                  "asTable": true,
+                  "calcs": [
+                     "min",
+                     "mean",
+                     "max"
+                  ],
+                  "displayMode": "table",
+                  "placement": "right"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "aerospike_node_stats_client_connections{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{instance}} {{ns}}",
+                  "refId": "Client connections"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "aerospike_node_stats_fabric_connections{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{instance}} {{ns}}",
+                  "refId": "Fabric connections"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "aerospike_node_stats_heartbeat_connections{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{instance}} {{ns}}",
+                  "refId": "Heartbeat connections"
+               }
+            ],
+            "title": "Connections",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Rate of client read transactions in this Aerospike instance organized by result.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "reqps"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 0,
+               "y": 25
+            },
+            "id": 8,
+            "options": {
+               "legend": {
+                  "asTable": true,
+                  "calcs": [
+                     "min",
+                     "mean",
+                     "max"
+                  ],
+                  "displayMode": "table",
+                  "placement": "right"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum by(instance,ns) (rate(aerospike_namespace_client_read_success{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}[$__rate_interval]))",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{ instance }} - success",
+                  "refId": "Client read success rate"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum by(instance,ns) (rate(aerospike_namespace_client_read_error{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}[$__rate_interval]))",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{ instance }} - error",
+                  "refId": "Client read error rate"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum by(instance,ns) (rate(aerospike_namespace_client_read_timeout{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}[$__rate_interval]))",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{ instance }} - timeout",
+                  "refId": "Client read timeout rate"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum by(instance,ns) (rate(aerospike_namespace_client_read_not_found{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}[$__rate_interval]))",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{ instance }} - not found",
+                  "refId": "Client read not found rate"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum by(instance,ns) (rate(aerospike_namespace_client_read_filtered_out{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}[$__rate_interval]))",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{ instance }} - filtered",
+                  "refId": "Client read filtered rate"
+               }
+            ],
+            "title": "Client reads",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Rate of client write transactions in this Aerospike instance organized by result.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "reqps"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 12,
+               "y": 25
+            },
+            "id": 9,
+            "options": {
+               "legend": {
+                  "asTable": true,
+                  "calcs": [
+                     "min",
+                     "mean",
+                     "max"
+                  ],
+                  "displayMode": "table",
+                  "placement": "right"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum by(instance,ns) (rate(aerospike_namespace_client_write_success{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}[$__rate_interval]))",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{ instance }} - success",
+                  "refId": "Client write success rate"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum by(instance,ns) (rate(aerospike_namespace_client_write_error{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}[$__rate_interval]))",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{ instance }} - error",
+                  "refId": "Client write error rate"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum by(instance,ns) (rate(aerospike_namespace_client_write_timeout{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}[$__rate_interval]))",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{ instance }} - timeout",
+                  "refId": "Client write timeout rate"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum by(instance,ns) (rate(aerospike_namespace_client_write_filtered_out{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}[$__rate_interval]))",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{ instance }} - filtered",
+                  "refId": "Client write filtered rate"
+               }
+            ],
+            "title": "Client writes",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Rate of client UDF transactions in this Aerospike instance organized by result.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "reqps"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 0,
+               "y": 33
+            },
+            "id": 10,
+            "options": {
+               "legend": {
+                  "asTable": true,
+                  "calcs": [
+                     "min",
+                     "mean",
+                     "max"
+                  ],
+                  "displayMode": "table",
+                  "placement": "right"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum by(instance,ns) (rate(aerospike_namespace_client_udf_complete{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}[$__rate_interval]))",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{ instance }} - complete",
+                  "refId": "Client UDF complete rate"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum by(instance,ns) (rate(aerospike_namespace_client_udf_error{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}[$__rate_interval]))",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{ instance }} - error",
+                  "refId": "Client UDF error rate"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum by(instance,ns) (rate(aerospike_namespace_client_udf_timeout{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}[$__rate_interval]))",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{ instance }} - timeout",
+                  "refId": "Client UDF timeout rate"
+               },
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "sum by(instance,ns) (rate(aerospike_namespace_client_udf_filtered_out{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}[$__rate_interval]))",
+                  "format": "time_series",
+                  "instant": false,
+                  "interval": "1m",
+                  "legendFormat": "{{ instance }} - filtered",
+                  "refId": "Client UDF filtered rate"
+               }
+            ],
+            "title": "Client UDF transactions",
+            "type": "timeseries"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${prometheus_datasource}"
+            },
+            "description": "Percentage of read transactions that are resolved by a cache hit.",
+            "fieldConfig": {
+               "defaults": {
+                  "color": {
+                     "fixedColor": "#5794f2",
+                     "mode": "palette-classic"
+                  },
+                  "custom": {
+                     "fillOpacity": 30,
+                     "gradientMode": "opacity",
+                     "lineInterpolation": "smooth",
+                     "lineWidth": 2,
+                     "showPoints": "never",
+                     "spanNulls": false
+                  },
+                  "thresholds": {
+                     "mode": "absolute",
+                     "steps": [ ]
+                  },
+                  "unit": "percent"
+               }
+            },
+            "gridPos": {
+               "h": 8,
+               "w": 12,
+               "x": 12,
+               "y": 33
+            },
+            "id": 11,
+            "options": {
+               "legend": {
+                  "calcs": [ ],
+                  "displayMode": "list"
+               },
+               "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+               }
+            },
+            "pluginVersion": "v11.4.0",
+            "targets": [
+               {
+                  "datasource": {
+                     "type": "prometheus",
+                     "uid": "${prometheus_datasource}"
+                  },
+                  "expr": "aerospike_namespace_cache_read_pct{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\",ns=~\"$ns\"}",
+                  "format": "time_series",
+                  "instant": false,
+                  "legendFormat": "{{ aerospike_cluster }} - {{ ns }}",
+                  "refId": "Cache read utilization"
+               }
+            ],
+            "title": "Cache read utilization",
+            "type": "timeseries"
+         }
+      ],
+      "refresh": "30s",
+      "schemaVersion": 39,
+      "tags": [
+         "aerospike"
+      ],
+      "templating": {
+         "list": [
+            {
+               "label": "Prometheus data source",
+               "name": "prometheus_datasource",
+               "query": "prometheus",
+               "regex": "(?!grafanacloud-usage|grafanacloud-ml-metrics).+",
+               "type": "datasource"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Job",
+               "multi": true,
+               "name": "job",
+               "query": "label_values(aerospike_namespace_data_used_pct{}, job)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Aerospike cluster",
+               "multi": true,
+               "name": "aerospike_cluster",
+               "query": "label_values(aerospike_namespace_data_used_pct{job=~\"$job\"}, aerospike_cluster)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".*",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Cluster",
+               "multi": true,
+               "name": "cluster",
+               "query": "label_values(aerospike_namespace_data_used_pct{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\"}, cluster)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".+",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Instance",
+               "multi": true,
+               "name": "instance",
+               "query": "label_values(aerospike_namespace_data_used_pct{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\"}, instance)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "allValue": ".*",
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "${prometheus_datasource}"
+               },
+               "includeAll": true,
+               "label": "Namespace",
+               "multi": true,
+               "name": "ns",
+               "query": "label_values(aerospike_namespace_data_used_pct{job=~\"$job\",aerospike_cluster=~\"$aerospike_cluster\",cluster=~\"$cluster\",instance=~\"$instance\"}, ns)",
+               "refresh": 2,
+               "sort": 1,
+               "type": "query"
+            },
+            {
+               "hide": 2,
+               "label": "Loki data source",
+               "name": "loki_datasource",
+               "query": "loki",
+               "regex": "(?!grafanacloud.+usage-insights|grafanacloud.+alert-state-history).+",
+               "type": "datasource"
+            }
+         ]
+      },
+      "time": {
+         "from": "now-30m",
+         "to": "now"
+      },
+      "timezone": "default",
+      "title": "Aerospike instance overview",
+      "uid": "aerospike_instance_overview"
+   }

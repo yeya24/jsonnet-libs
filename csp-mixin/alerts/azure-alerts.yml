@@ -1,0 +1,248 @@
+groups:
+  - name: azure.virtualmachines
+    rules:
+      - alert: AzureVMHighCpuUtilization
+        expr: |
+          avg by (job,resourceGroup,subscriptionName,resourceName,asserts_env,asserts_site) (azure_microsoft_compute_virtualmachines_percentage_cpu_average_percent{job=~".+",resourceGroup=~".+",subscriptionName=~".+",resourceName=~".+"})  > 85
+        for: 5m
+        keep_firing_for: 10m
+        labels:
+          severity: critical
+          service: 'Azure Virtual Machines'
+          serviceId: 'microsoft.compute/virtualmachines'
+          namespace: cloud-provider-azure
+        annotations:
+          summary: 'VM CPU utilization is too high.'
+          description: 'The VM {{ $labels.resourceName }} is under heavy load and may become unresponsive.'
+          dashboard_url: '/a/grafana-csp-app/azure/dashboards/vm'
+
+      - alert: AzureVMUnavailable
+        expr: |
+          avg by (job,resourceGroup,subscriptionName,resourceName,asserts_env,asserts_site) (azure_microsoft_compute_virtualmachines_vmavailabilitymetric_average_count{job=~".+",resourceGroup=~".+",subscriptionName=~".+",resourceName=~".+"}) != 1
+        for: 5m
+        keep_firing_for: 10m
+        labels:
+          severity: critical
+          service: 'Azure Virtual Machines'
+          serviceId: 'microsoft.compute/virtualmachines'
+          namespace: cloud-provider-azure
+        annotations:
+          summary: 'VM unavailable.'
+          description: 'The VM {{ $labels.resourceName }} is not functioning or crashed, which may require immediate action.'
+          dashboard_url: '/a/grafana-csp-app/azure/dashboards/vm'
+
+  - name: azure.databases
+    rules:
+      - alert: AzureDatabaseHighDtuConsumption
+        expr: |
+          avg by (job,resourceGroup,subscriptionName,resourceName,asserts_env,asserts_site) (azure_microsoft_sql_servers_databases_dtu_consumption_percent_average_percent{job=~".+",resourceGroup=~".+",subscriptionName=~".+",resourceName=~".+"}) > 90
+        for: 10m
+        keep_firing_for: 10m
+        labels:
+          severity: critical
+          service: 'Azure SQL database'
+          serviceId: 'microsoft.sql/servers/databases'
+          namespace: cloud-provider-azure
+        annotations:
+          summary: 'High database DTU consumption.'
+          description: 'Check active queries and optimize indexes or consider scaling up DTUs to handle load in {{ $labels.resourceName }} database.'
+          dashboard_url: '/a/grafana-csp-app/azure/dashboards/sqldatabase'
+
+      - alert: AzureDatabaseHighStorageUsage
+        expr: |
+          avg by (job,resourceGroup,subscriptionName,resourceName,asserts_env,asserts_site) (azure_microsoft_sql_servers_databases_storage_percent_maximum_percent{job=~".+",resourceGroup=~".+",subscriptionName=~".+",resourceName=~".+"}) > 95
+        for: 15m
+        keep_firing_for: 10m
+        labels:
+          severity: critical
+          service: 'Azure SQL database'
+          serviceId: 'microsoft.sql/servers/databases'
+          namespace: cloud-provider-azure
+        annotations:
+          summary: 'High database Storage usage.'
+          description: 'Archive or delete old data, or scale up storage capacity in {{ $labels.resourceName }} database.'
+          dashboard_url: '/a/grafana-csp-app/azure/dashboards/sqldatabase'
+
+      - alert: AzureDatabaseHighDeadlockCount
+        expr: |
+          sum by (job,resourceGroup,subscriptionName,resourceName,asserts_env,asserts_site) (rate(azure_microsoft_sql_servers_databases_deadlock_total_count{job=~".+",resourceGroup=~".+",subscriptionName=~".+",resourceName=~".+"}[5m])) > 5
+        for: 10m
+        keep_firing_for: 10m
+        labels:
+          severity: info
+          service: 'Azure SQL database'
+          serviceId: 'microsoft.sql/servers/databases'
+          namespace: cloud-provider-azure
+        annotations:
+          summary: 'High database Deadlock count.'
+          description: 'Check {{ $labels.resourceName }} database logs for deadlock details and optimize affected queries.'
+          dashboard_url: '/a/grafana-csp-app/azure/dashboards/sqldatabase'
+
+      - alert: AzureDatabaseHighUserCpuUsage
+        expr: |
+          avg by (job,resourceGroup,subscriptionName,resourceName,asserts_env,asserts_site) (azure_microsoft_sql_servers_databases_cpu_percent_average_percent{job=~".+",resourceGroup=~".+",subscriptionName=~".+",resourceName=~".+"}) > 90
+        for: 10m
+        keep_firing_for: 10m
+        labels:
+          severity: warning
+          service: 'Azure SQL database'
+          serviceId: 'microsoft.sql/servers/databases'
+          namespace: cloud-provider-azure
+        annotations:
+          summary: 'High database User CPU usage.'
+          description: 'Identify high CPU queries on {{ $labels.resourceName }} database and optimize them.'
+          dashboard_url: '/a/grafana-csp-app/azure/dashboards/sqldatabase'
+
+      - alert: AzureDatabaseHighSystemFailedConnections
+        expr: |
+          sum by (job,resourceGroup,subscriptionName,resourceName,asserts_env,asserts_site) (rate(azure_microsoft_sql_servers_databases_connection_failed_total_count{job=~".+",resourceGroup=~".+",subscriptionName=~".+",resourceName=~".+"}[5m])) > 10
+        for: 5m
+        keep_firing_for: 10m
+        labels:
+          severity: warning
+          service: 'Azure SQL database'
+          serviceId: 'microsoft.sql/servers/databases'
+          namespace: cloud-provider-azure
+        annotations:
+          summary: 'High number of database System Failed connections.'
+          description: 'Check network problems, firewall restrictions or high resource consumption affecting application access to the {{ $labels.resourceName }} database.'
+          dashboard_url: '/a/grafana-csp-app/azure/dashboards/sqldatabase'
+
+      - alert: AzureDatabaseHighUserFailedConnections
+        expr: |
+          sum by (job,resourceGroup,subscriptionName,resourceName,asserts_env,asserts_site) (rate(azure_microsoft_sql_servers_databases_connection_failed_user_error_total_count{job=~".+",resourceGroup=~".+",subscriptionName=~".+",resourceName=~".+"}[5m])) > 10
+        for: 15m
+        keep_firing_for: 10m
+        labels:
+          severity: warning
+          service: 'Azure SQL database'
+          serviceId: 'microsoft.sql/servers/databases'
+          namespace: cloud-provider-azure
+        annotations:
+          summary: 'High number of database User Failed connections.'
+          description: 'Check for authentication problems, network configuration errors, firewall issues, or resource constraints, affecting database accessibility for users on database {{ $labels.resourceName }}.'
+          dashboard_url: '/a/grafana-csp-app/azure/dashboards/sqldatabase'
+
+      - alert: AzureDatabaseHighWorkerUsage
+        expr: |
+          avg by (job,resourceGroup,subscriptionName,resourceName,asserts_env,asserts_site) (azure_microsoft_sql_servers_databases_workers_percent_average_percent{job=~".+",resourceGroup=~".+",subscriptionName=~".+",resourceName=~".+"}) > 60
+        for: 5m
+        keep_firing_for: 10m
+        labels:
+          severity: critical
+          service: 'Azure SQL database'
+          serviceId: 'microsoft.sql/servers/databases'
+          namespace: cloud-provider-azure
+        annotations:
+          summary: 'High database worker usage.'
+          description: 'Look for long execution queries, review the number of concurrent queries and requests being sent to the database or check if there are any blocking sessions or deadlocks into the {{ $labels.resourceName }} database.'
+          dashboard_url: '/a/grafana-csp-app/azure/dashboards/sqldatabase'
+
+      - alert: AzureDatabaseHighDataIoUsage
+        expr: |
+          avg by (job,resourceGroup,subscriptionName,resourceName,asserts_env,asserts_site) (azure_microsoft_sql_servers_databases_physical_data_read_percent_average_percent{job=~".+",resourceGroup=~".+",subscriptionName=~".+",resourceName=~".+"}) > 90
+        for: 15m
+        keep_firing_for: 10m
+        labels:
+          severity: info
+          service: 'Azure SQL database'
+          serviceId: 'microsoft.sql/servers/databases'
+          namespace: cloud-provider-azure
+        annotations:
+          summary: 'High database data IO usage.'
+          description: 'Review queries with high read or write activity, check if there are missing indexes or inefficient indexes that result in full table scans and assess the volume of transactions into the {{ $labels.resourceName }} database.'
+          dashboard_url: '/a/grafana-csp-app/azure/dashboards/sqldatabase'
+
+      - alert: AzureDatabaseLowTempdbLogSpace
+        expr: |
+          avg by (job,resourceGroup,subscriptionName,resourceName,asserts_env,asserts_site) (azure_microsoft_sql_servers_databases_tempdb_log_used_percent_average_percent{job=~".+",resourceGroup=~".+",subscriptionName=~".+",resourceName=~".+"}) > 60
+        for: 5m
+        keep_firing_for: 10m
+        labels:
+          severity: critical
+          service: 'Azure SQL database'
+          serviceId: 'microsoft.sql/servers/databases'
+          namespace: cloud-provider-azure
+        annotations:
+          summary: 'Low database tempdb log space.'
+          description: 'Look for active sessions that might be using TempDB intensively, identify stored procedures or queries that create temporary tables or objects, and also look for long-running or memory-intensive queries that rely heavily on TempDB into the {{ $labels.resourceName }} database.'
+          dashboard_url: '/a/grafana-csp-app/azure/dashboards/sqldatabase'
+
+  - name: azure.virtualnetworks
+    rules:
+      - alert: AzureVNetSubnetIPExhaustion
+        expr: |
+          ((azure_microsoft_network_virtualnetworks_availablesubnetaddresses_count{job=~".+",resourceGroup=~".+",subscriptionName=~".+",resourceName=~".+"}/(azure_microsoft_network_virtualnetworks_availablesubnetaddresses_count{job=~".+",resourceGroup=~".+",subscriptionName=~".+",resourceName=~".+"} + azure_microsoft_network_virtualnetworks_assignedsubnetaddresses_count{job=~".+",resourceGroup=~".+",subscriptionName=~".+",resourceName=~".+"})) * 100) < 10
+        for: 5m
+        keep_firing_for: 10m
+        labels:
+          severity: critical
+          service: 'Azure Virtual network'
+          serviceId: 'microsoft.network/virtualnetworks'
+          namespace: cloud-provider-azure
+        annotations:
+          summary: 'Subnet IP Address Exhaustion Detected.'
+          description: 'IP addresses for the subnet {{ $labels.subnet_name }} on the Virtual network {{ $labels.resourceName }} have dropped below the critical threshold. This may cause connectivity issues for new resources requiring IP allocations. Consider resizing the subnet or optimizing IP usage.'
+          dashboard_url: '/a/grafana-csp-app/azure/dashboards/vnet'
+
+      - alert: AzureVNetPeeringConnectionFailures
+        expr: |
+          ((azure_microsoft_network_virtualnetworks_connectedpeerings_count{job=~".+", resourceGroup=~".+", subscriptionName=~".+", resourceName=~".+"} / azure_microsoft_network_virtualnetworks_peerings_count{job=~".+", resourceGroup=~".+", subscriptionName=~".+", resourceName=~".+"}) * 100) < 80
+        for: 5m
+        keep_firing_for: 10m
+        labels:
+          severity: critical
+          service: 'Azure Virtual network'
+          serviceId: 'microsoft.network/virtualnetworks'
+          namespace: cloud-provider-azure
+        annotations:
+          summary: 'Azure VNet Peering Connection Issues.'
+          description: 'The success rate of Virtual Network {{ $labels.resourceName }} peering connections has fallen below the defined threshold, indicating possible connectivity failures. Investigate potential misconfigurations, network latency, or service disruptions affecting peering communication.'
+          dashboard_url: '/a/grafana-csp-app/azure/dashboards/vnet'
+
+  - name: azure.flexibleserverspostgresql
+    rules:
+      - alert: AzureFlexibleServerHighCpuUtilization
+        expr: |
+          azure_microsoft_dbforpostgresql_flexibleservers_cpu_percent_average_percent{resourceName!=""} > 90
+        for: 5m
+        keep_firing_for: 10m
+        labels:
+          severity: critical
+          service: 'Azure PostgreSQL Flexible Servers'
+          serviceId: 'microsoft.dbforpostgresql/flexibleservers'
+          namespace: cloud-provider-azure
+        annotations:
+          summary: 'Flexible Server CPU utilization is too high.'
+          description: 'The Flexible Server {{ $labels.resourceName }} is under heavy load and may become unresponsive.'
+          dashboard_url: '/a/grafana-csp-app/azure/dashboards/postgresql-flexible-servers'
+
+      - alert: AzureFlexibleServerHighMemoryUsage
+        expr: |
+          azure_microsoft_dbforpostgresql_flexibleservers_memory_percent_average_percent{resourceName!=""} > 90
+        for: 5m
+        keep_firing_for: 10m
+        labels:
+          severity: critical
+          service: 'Azure PostgreSQL Flexible Servers'
+          serviceId: 'microsoft.dbforpostgresql/flexibleservers'
+          namespace: cloud-provider-azure
+        annotations:
+          summary: 'Flexible Server Memory usage is too high.'
+          description: 'The Flexible Server {{ $labels.resourceName }} is experiencing high memory usage, which may lead to performance degradation.'
+          dashboard_url: '/a/grafana-csp-app/azure/dashboards/postgresql-flexible-servers'
+
+      - alert: AzureFlexibleServerHighStorageUsage
+        expr: |
+          azure_microsoft_dbforpostgresql_flexibleservers_storage_percent_maximum_percent{resourceName!=""} > 90
+        for: 5m
+        keep_firing_for: 10m
+        labels:
+          severity: critical
+          service: 'Azure PostgreSQL Flexible Servers'
+          serviceId: 'microsoft.dbforpostgresql/flexibleservers'
+          namespace: cloud-provider-azure
+        annotations:
+          summary: 'Flexible Server Storage usage is too high.'
+          description: 'The Flexible Server {{ $labels.resourceName }} is running low on storage space, which may impact database operations.'
+          dashboard_url: '/a/grafana-csp-app/azure/dashboards/postgresql-flexible-servers'
